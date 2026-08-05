@@ -1,5 +1,5 @@
 # Use the official Rust image as a builder
-FROM rust:1.80-slim-bullseye AS builder
+FROM rust:1.80-slim-bookworm AS builder
 
 # Install dependencies required for building Leptos and compiling Rust
 RUN apt-get update && apt-get install -y \
@@ -32,7 +32,7 @@ RUN cd crates/frontend && cargo leptos build --release -vv
 # ------------------------------------------------------------------------------
 # Runtime stage
 # ------------------------------------------------------------------------------
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
