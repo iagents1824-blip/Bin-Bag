@@ -29,6 +29,9 @@ COPY . .
 # This compiles the frontend to WASM and the backend server binary.
 RUN cd crates/frontend && cargo leptos build --release -vv
 
+# Move the binary to a known location regardless of cargo-leptos version
+RUN cp target/release/bin-bag /app/server-bin || cp target/server/release/bin-bag /app/server-bin || cp target/release/bin-bag-frontend /app/server-bin
+
 # ------------------------------------------------------------------------------
 # Runtime stage
 # ------------------------------------------------------------------------------
@@ -42,8 +45,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the compiled server binary from the builder stage
-# (cargo leptos places the binary in target/release or target/server/release depending on config, but normally target/release for the workspace)
-COPY --from=builder /app/target/release/bin-bag-frontend /app/bin-bag-frontend
+COPY --from=builder /app/server-bin /app/bin-bag-frontend
 
 # Copy the generated site assets (WASM, CSS, JS, public files)
 COPY --from=builder /app/crates/frontend/target/site /app/site
