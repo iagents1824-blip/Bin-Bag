@@ -8,7 +8,7 @@ serde = { version = "1", features = ["derive"] }
 uuid = { version = "1", features = ["v4", "serde", "js"] }
 chrono = { version = "0.4", features = ["serde"] }
 thiserror = "2"
-sqlx = { version = "0.8", default-features = false, features = ["postgres", "uuid", "chrono"] }
+sqlx = { version = "0.8", default-features = false, features = ["derive", "uuid", "chrono"] }
 
 # Server only dependencies
 tokio = { version = "1.37", features = ["full"], optional = true }
@@ -29,6 +29,7 @@ uuid = { version = "1", features = ["js"] }
 ssr = [
     "sqlx/runtime-tokio",
     "sqlx/tls-native-tls",
+    "sqlx/postgres",
     "dep:tokio",
     "dep:argon2",
     "dep:password-hash",
