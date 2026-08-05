@@ -48,8 +48,10 @@ async fn main() {
     tracing::info!("Database migrations applied");
 
     // JWT secret
-    let jwt_secret = std::env::var("JWT_SECRET")
-        .expect("JWT_SECRET must be set");
+    let jwt_secret = std::env::var("JWT_SECRET").unwrap_or_else(|_| {
+        tracing::warn!("JWT_SECRET environment variable is not set. Using default secret. Please configure this in Railway Variables!");
+        "default_jwt_secret_for_development_and_initial_deploy".to_string()
+    });
 
     // Leptos configuration
     let conf = get_configuration(None).unwrap();
@@ -67,6 +69,23 @@ async fn main() {
     let api_routes = Router::new()
         .route("/api/webhooks/stripe", axum::routing::post(bin_bag_frontend::routes::stripe_webhook::handle_stripe_webhook))
         .route("/api/ws", axum::routing::get(bin_bag_frontend::routes::websocket::handle_ws_upgrade))
+        .route("/api/*fn_name", axum::routing::get({
+            let app_state = app_state.clone();
+            move |req: axum::extract::Request| {
+                let app_state = app_state.clone();
+                leptos_axum::handle_server_fns_with_context(move || {
+                    leptos::context::provide_context(app_state.clone());
+                }, req)
+            }
+        }).post({
+            let app_state = app_state.clone();
+            move |req: axum::extract::Request| {
+                let app_state = app_state.clone();
+                leptos_axum::handle_server_fns_with_context(move || {
+                    leptos::context::provide_context(app_state.clone());
+                }, req)
+            }
+        }))
         .with_state(app_state.clone());
 
     use tower_http::services::ServeDir;
