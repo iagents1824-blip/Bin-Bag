@@ -5,21 +5,40 @@ edition = "2021"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
-uuid = { version = "1", features = ["v4", "serde"] }
+uuid = { version = "1", features = ["v4", "serde", "js"] }
 chrono = { version = "0.4", features = ["serde"] }
 thiserror = "2"
-sqlx = { version = "0.8", features = ["runtime-tokio", "tls-native-tls", "postgres", "uuid", "chrono"] }
-argon2 = "0.5"
-password-hash = { version = "0.5", features = ["std"] }
-jsonwebtoken = "9"
-hmac = "0.12"
-sha2 = "0.10"
-hex = "0.4"
-tokio = { version = "1.37", features = ["full"] }
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "uuid", "chrono"] }
+
+# Server only dependencies
+tokio = { version = "1.37", features = ["full"], optional = true }
+argon2 = { version = "0.5", optional = true }
+password-hash = { version = "0.5", features = ["std"], optional = true }
+jsonwebtoken = { version = "9", optional = true }
+hmac = { version = "0.12", optional = true }
+sha2 = { version = "0.10", optional = true }
+hex = { version = "0.4", optional = true }
 
 [dev-dependencies]
 serde_json = "1"
 
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+uuid = { version = "1", features = ["js"] }
+
+[features]
+ssr = [
+    "sqlx/runtime-tokio",
+    "sqlx/tls-native-tls",
+    "dep:tokio",
+    "dep:argon2",
+    "dep:password-hash",
+    "dep:jsonwebtoken",
+    "dep:hmac",
+    "dep:sha2",
+    "dep:hex"
+]
+
 [[bin]]
 name = "seed"
 path = "src/bin/seed.rs"
+required-features = ["ssr"]
