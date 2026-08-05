@@ -116,8 +116,11 @@ async fn main() {
         .with_state(leptos_options);
 
     // Start server
-    tracing::info!("Listening on http://{}", addr);
-    let listener = tokio::net::TcpListener::bind(&addr)
+    let port = std::env::var("PORT").unwrap_or_else(|_| "3000".to_string());
+    let bind_addr = format!("0.0.0.0:{}", port);
+    
+    tracing::info!("Listening on http://{}", bind_addr);
+    let listener = tokio::net::TcpListener::bind(&bind_addr)
         .await
         .expect("Failed to bind to address");
     axum::serve(listener, app.into_make_service())

@@ -67,8 +67,6 @@ ENV LEPTOS_SITE_ROOT="site"
 ENV LEPTOS_SITE_ADDR="0.0.0.0:3000"
 ENV LEPTOS_ENV="PROD"
 
-# Expose the port the app runs on
-EXPOSE 3000
 
 # Run the server
 CMD ["/app/bin-bag-frontend"]
