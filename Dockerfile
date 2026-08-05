@@ -1,5 +1,5 @@
 # Use the official Rust image as a builder
-FROM rust:1.80-slim-bookworm AS builder
+FROM rust:1.87-slim-bookworm AS builder
 
 # Install dependencies required for building Leptos and compiling Rust
 RUN apt-get update && apt-get install -y \
