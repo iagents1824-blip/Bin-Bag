@@ -22,12 +22,15 @@ RUN cargo binstall cargo-leptos -y
 # Set working directory
 WORKDIR /app
 
+# Limit Cargo to 1 or 2 jobs to avoid Out-Of-Memory (OOM) kills on Railway's free tier
+ENV CARGO_BUILD_JOBS=1
+
 # Copy the entire workspace
 COPY . .
 
 # Build the application in release mode using cargo-leptos
 # This compiles the frontend to WASM and the backend server binary.
-RUN cd crates/frontend && cargo leptos build --release -vv
+RUN cd crates/frontend && cargo leptos build --release
 
 # Move the binary to a known location regardless of cargo-leptos version
 RUN cp target/release/bin-bag /app/server-bin || cp target/server/release/bin-bag /app/server-bin || cp target/release/bin-bag-frontend /app/server-bin
