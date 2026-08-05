@@ -35,6 +35,9 @@ RUN cd crates/frontend && cargo leptos build --release
 # Move the binary to a known location regardless of cargo-leptos version
 RUN cp target/release/bin-bag /app/server-bin || cp target/server/release/bin-bag /app/server-bin || cp target/release/bin-bag-frontend /app/server-bin
 
+# Move the site directory to a known location regardless of workspace layout
+RUN mv target/site /app/site-export || mv crates/frontend/target/site /app/site-export || mv target/front/site /app/site-export
+
 # ------------------------------------------------------------------------------
 # Runtime stage
 # ------------------------------------------------------------------------------
@@ -51,7 +54,7 @@ WORKDIR /app
 COPY --from=builder /app/server-bin /app/bin-bag-frontend
 
 # Copy the generated site assets (WASM, CSS, JS, public files)
-COPY --from=builder /app/crates/frontend/target/site /app/site
+COPY --from=builder /app/site-export /app/site
 
 # Ensure migrations are available if the binary runs them automatically
 COPY --from=builder /app/migrations /app/migrations
