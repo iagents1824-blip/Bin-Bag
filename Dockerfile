@@ -56,6 +56,9 @@ COPY --from=builder /app/server-bin /app/bin-bag-frontend
 # Copy the generated site assets (WASM, CSS, JS, public files)
 COPY --from=builder /app/site-export /app/site
 
+# Copy Cargo.toml so get_configuration() doesn't panic at runtime
+COPY crates/frontend/Cargo.toml /app/Cargo.toml
+
 # Ensure migrations are available if the binary runs them automatically
 COPY --from=builder /app/migrations /app/migrations
 

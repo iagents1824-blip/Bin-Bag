@@ -90,15 +90,13 @@ async fn main() {
 
     use tower_http::services::ServeDir;
 
-    let manifest_dir = env!("CARGO_MANIFEST_DIR");
-    let style_dir = format!("{}/style", manifest_dir);
-    let public_dir = format!("{}/public", manifest_dir);
-
+    let site_root = &leptos_options.site_root;
+    
     // Build Axum router
     let app = Router::new()
-        .nest_service("/pkg", ServeDir::new(&style_dir))
-        .nest_service("/style", ServeDir::new(&style_dir))
-        .nest_service("/public", ServeDir::new(&public_dir))
+        .nest_service("/pkg", ServeDir::new(format!("{}/pkg", site_root)))
+        .nest_service("/public", ServeDir::new(format!("{}/public", site_root)))
+        .nest_service("/style", ServeDir::new(format!("{}/style", site_root)))
         .merge(api_routes)
         .leptos_routes_with_context(
             &leptos_options,
