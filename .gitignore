@@ -1,0 +1,18 @@
+# Build artifacts
+/target/
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# sqlx offline mode (commit .sqlx/ but not .env)
+# .sqlx/
