@@ -28,7 +28,7 @@ pub fn Navbar() -> impl IntoView {
         <nav class="navbar">
             <div class="container navbar-inner">
                 <a href="/" class="navbar-logo" style="display: flex; align-items: center; gap: 8px;">
-                    <img src="/public/logo.jpg" alt="Bin Bag Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+                    <img src="/logo.jpg" alt="Bin Bag Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
                     <span>"Bin Bag"</span>
                 </a>
 

@@ -1,150 +1,181 @@
-use sqlx::postgres::PgPoolOptions;
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
+    Argon2,
+};
+use bin_bag_core::models::listing::{LicenseType, ListingStatus, ListingType};
+use bin_bag_core::models::user::UserRole;
+use sqlx::PgPool;
+use std::env;
 use uuid::Uuid;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let database_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "postgres://postgres:postgres@localhost:5432/bin_bag".to_string());
-    let pool = PgPoolOptions::new().max_connections(5).connect(&database_url).await?;
+    println!("🌱 Starting Bin Bag Database Seeder...");
 
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let pool = PgPool::connect(&database_url).await?;
+
+    // Create a password hash for mock users
+    let salt = SaltString::generate(&mut OsRng);
+    let argon2 = Argon2::default();
+    let password_hash = argon2
+        .hash_password(b"password123", &salt)?
+        .to_string();
+
+    // 1. Seed Users
+    println!("👤 Seeding mock users...");
+    
     let seller_id = Uuid::new_v4();
-    let pwhash = "$argon2id$v=19$m=19456,t=2,p=1$X1YwYkh6aHBUdE5mSW8waw$aV0K1x7aYq+DqN8zF/gG8Xw6pXvH2z9w2u3qM0K/s1g";
-
-    // Insert a dummy seller user
     sqlx::query(
-        "INSERT INTO users (id, email, username, password_hash, role) VALUES ($1, $2, $3, $4, 'seller') ON CONFLICT DO NOTHING"
+        r#"
+        INSERT INTO users (id, email, username, display_name, password_hash, role)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (email) DO NOTHING
+        "#
     )
     .bind(seller_id)
-    .bind("demo@seller.com")
-    .bind("DemoSeller")
-    .bind(pwhash)
-    .execute(&pool).await?;
+    .bind("seller@example.com")
+    .bind("DataSorcerer")
+    .bind("Data Sorcerer")
+    .bind(&password_hash)
+    .bind(UserRole::Seller as i16)
+    .execute(&pool)
+    .await?;
 
-    // We need to fetch the seller id if it already existed
-    let actual_seller: (Uuid,) = sqlx::query_as("SELECT id FROM users WHERE email = 'demo@seller.com'").fetch_one(&pool).await?;
-    let s_id = actual_seller.0;
+    let buyer_id = Uuid::new_v4();
+    sqlx::query(
+        r#"
+        INSERT INTO users (id, email, username, display_name, password_hash, role)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (email) DO NOTHING
+        "#
+    )
+    .bind(buyer_id)
+    .bind("buyer@example.com")
+    .bind("ModelEnthusiast")
+    .bind("Model Enthusiast")
+    .bind(&password_hash)
+    .bind(UserRole::Buyer as i16)
+    .execute(&pool)
+    .await?;
 
-    // Clear old dummy models to keep the marketplace clean and realistic
-    sqlx::query("DELETE FROM listings").execute(&pool).await?;
-    sqlx::query("DELETE FROM tags").execute(&pool).await?;
+    // For safety, retrieve the seller ID from the DB in case it was already inserted
+    #[derive(sqlx::FromRow)]
+    struct IdRow { id: Uuid }
+    
+    let actual_seller_id = sqlx::query_as::<_, IdRow>("SELECT id FROM users WHERE email = 'seller@example.com'")
+        .fetch_one(&pool)
+        .await?
+        .id;
 
-    let dummy_listings = vec![
+    // 2. Seed Listings
+    println!("📦 Seeding mock listings...");
+    
+    let mock_listings = vec![
         (
-            "Llama 3 (70B Instruct)",
-            "Meta's most capable open-source large language model. Highly tuned for instruction following, coding, and reasoning tasks.",
-            "model", "LLM", 0, "mit", vec!["Meta", "LLM", "Open Source", "Reasoning"]
+            "Llama 3 Finetune (Finance)",
+            "A specialized finetune of Llama 3 8B optimized for financial analysis, stock prediction, and quarterly report summarization. Trained on 500k curated financial documents.",
+            ListingType::Model,
+            "Finance",
+            2500, // $25.00
+            LicenseType::Proprietary,
         ),
         (
-            "Claude 3.5 Sonnet API",
-            "Anthropic's fastest and most intelligent model. Unparalleled coding capabilities and visual reasoning via API access.",
-            "chatbot", "API", 1500, "proprietary", vec!["Anthropic", "API", "Coding", "Vision"]
+            "Stable Diffusion XL Anime Workflow",
+            "A complete ComfyUI workflow for generating ultra-high-quality anime-style images using SDXL. Includes custom nodes for upscale and face detailing.",
+            ListingType::Workflow,
+            "Image Generation",
+            1200, // $12.00
+            LicenseType::Custom,
         ),
         (
-            "GPT-4o API Workflow",
-            "Complete OpenAI GPT-4o integration workflow with streaming capabilities, function calling, and structured JSON output.",
-            "workflow", "Integration", 2900, "proprietary", vec!["OpenAI", "GPT-4", "Workflow", "JSON"]
+            "Medical Imaging Corpus 2026",
+            "A comprehensive dataset of 10,000 anonymized X-rays and MRIs with bounding box annotations for anomaly detection.",
+            ListingType::Dataset,
+            "Medical",
+            15000, // $150.00
+            LicenseType::Proprietary,
         ),
         (
-            "Stable Diffusion 3 Medium",
-            "Stability AI's most advanced text-to-image open model. Features photorealism, typography generation, and complex prompt adherence.",
-            "model", "Image Generation", 0, "custom", vec!["Stable Diffusion", "Art", "Text-to-Image"]
+            "Ultimate Copywriting Prompt",
+            "A massive 2000-token prompt for ChatGPT and Claude that turns the AI into a world-class copywriter. Includes 10 specific frameworks.",
+            ListingType::Prompt,
+            "Marketing",
+            500, // $5.00
+            LicenseType::Mit,
         ),
         (
-            "Midjourney v6 Prompt Engineering Course",
-            "A comprehensive database of 1,000+ optimized Midjourney v6 prompts for cinematic lighting, character design, and hyper-realism.",
-            "prompt", "Art", 3900, "proprietary", vec!["Midjourney", "Prompting", "Design"]
+            "CodeAssist Pro",
+            "A highly optimized coding assistant model trained on Rust, Python, and Go. Excellent at identifying security vulnerabilities.",
+            ListingType::Model,
+            "Programming",
+            0, // Free
+            LicenseType::Apache2,
         ),
         (
-            "Whisper V3 (Large)",
-            "OpenAI's state-of-the-art automatic speech recognition system. Supports multiple languages and translation to English.",
-            "model", "Audio", 0, "mit", vec!["Speech-to-Text", "OpenAI", "Audio"]
+            "Customer Support Bot Template",
+            "A ready-to-deploy LangChain chatbot template with RAG capabilities built-in. Connects directly to Zendesk and Intercom.",
+            ListingType::Chatbot,
+            "Customer Service",
+            3000, // $30.00
+            LicenseType::Proprietary,
         ),
         (
-            "Mistral Large 2",
-            "Mistral AI's flagship frontier model with massive context length and top-tier multilingual coding performance.",
-            "model", "LLM", 0, "apache2", vec!["Mistral", "LLM", "Multilingual"]
+            "Midjourney V6 Photorealism Kit",
+            "A collection of 50 meticulously crafted prompts for Midjourney V6 to achieve hyper-realistic photography of people, food, and architecture.",
+            ListingType::Prompt,
+            "Art",
+            800, // $8.00
+            LicenseType::Other,
         ),
         (
-            "HuggingFace Fine-Web Dataset",
-            "15 Trillion token dataset cleaned and deduplicated for training frontier language models. The ultimate pre-training data.",
-            "dataset", "Data", 0, "mit", vec!["Dataset", "Pre-training", "Tokens"]
+            "Voice Synthesis Dataset (English - UK)",
+            "15 hours of studio-quality voice recordings from 5 different UK accents, perfectly aligned with text transcripts.",
+            ListingType::Dataset,
+            "Audio",
+            4500, // $45.00
+            LicenseType::Proprietary,
         ),
         (
-            "AutoGPT Autonomous Agent",
-            "Experimental open-source application showcasing the capabilities of LLMs to autonomously achieve complex goals.",
-            "assistant", "Agent", 0, "mit", vec!["AutoGPT", "Agent", "Autonomous"]
+            "Auto-Blogger Agent",
+            "An autonomous AutoGen agent that researches trending topics and writes SEO-optimized blog posts daily.",
+            ListingType::Assistant,
+            "Content Creation",
+            2000, // $20.00
+            LicenseType::Custom,
         ),
         (
-            "GitHub Copilot Enterprise Integration",
-            "Custom workflow setup for injecting proprietary corporate codebases into Copilot's RAG system for Enterprise teams.",
-            "workflow", "DevOps", 9900, "proprietary", vec!["GitHub", "Copilot", "Coding"]
-        ),
-        (
-            "Sora Video Generation API Access",
-            "Early access API wrapper for OpenAI's Sora text-to-video model. Generates up to 60 seconds of high-fidelity video.",
-            "model", "Video Generation", 19900, "proprietary", vec!["Sora", "Video", "Generative AI"]
-        ),
-        (
-            "ElevenLabs Voice Cloning Pipeline",
-            "Automated workflow for generating hyper-realistic AI voice clones from 30-second audio samples via the ElevenLabs API.",
-            "workflow", "Audio", 4900, "proprietary", vec!["ElevenLabs", "Voice", "TTS"]
+            "Quantum Compute Sim V2",
+            "A specialized transformer model trained to simulate 5-qubit quantum circuits with 99.9% accuracy.",
+            ListingType::Model,
+            "Science",
+            5000, // $50.00
+            LicenseType::Gpl3,
         ),
     ];
 
-    for (title, desc, l_type, cat, price, license, tags) in dummy_listings {
-        let id = Uuid::new_v4();
+    for (title, desc, l_type, cat, price, lic) in mock_listings {
+        let listing_id = Uuid::new_v4();
         sqlx::query(
-            "INSERT INTO listings (id, seller_id, title, description, listing_type, category, price_cents, license, status) VALUES ($1, $2, $3, $4, CAST($5 AS listing_type), $6, $7, CAST($8 AS license_type), 'active')"
+            r#"
+            INSERT INTO listings (id, seller_id, title, description, listing_type, category, price_cents, license, status)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ON CONFLICT DO NOTHING
+            "#
         )
-        .bind(id)
-        .bind(s_id)
+        .bind(listing_id)
+        .bind(actual_seller_id)
         .bind(title)
         .bind(desc)
-        .bind(l_type)
+        .bind(l_type as i16)
         .bind(cat)
         .bind(price)
-        .bind(license)
-        .execute(&pool).await?;
-
-        for tag in tags {
-            let tag_id = Uuid::new_v4();
-            sqlx::query(
-                "INSERT INTO tags (id, name) VALUES ($1, $2) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id"
-            )
-            .bind(tag_id)
-            .bind(tag)
-            .execute(&pool).await?;
-            
-            let fetched_tag: (Uuid,) = sqlx::query_as("SELECT id FROM tags WHERE name = $1").bind(tag).fetch_one(&pool).await?;
-
-            sqlx::query(
-                "INSERT INTO listing_tags (listing_id, tag_id) VALUES ($1, $2) ON CONFLICT DO NOTHING"
-            )
-            .bind(id)
-            .bind(fetched_tag.0)
-            .execute(&pool).await?;
-        }
-        println!("Inserted listing: {}", title);
+        .bind(lic as i16)
+        .bind(ListingStatus::Active as i16)
+        .execute(&pool)
+        .await?;
     }
 
-    for i in 0..20 {
-        let order_id = Uuid::new_v4();
-        let offset_val = (i % 8) as i64;
-        let listing: (Uuid, i32) = sqlx::query_as("SELECT id, price_cents FROM listings LIMIT 1 OFFSET $1").bind(offset_val).fetch_one(&pool).await?;
-        
-        let q = format!(
-            "INSERT INTO orders (id, buyer_id, seller_id, listing_id, price_cents, status, created_at) VALUES ($1, $2, $3, $4, $5, 'completed', NOW() - interval '{} days')",
-            i % 14
-        );
-        sqlx::query(&q)
-            .bind(order_id)
-            .bind(s_id)
-            .bind(s_id) // Using seller_id as buyer_id for dummy data
-            .bind(listing.0)
-            .bind(listing.1)
-            .execute(&pool).await?;
-    }
-
-    println!("Seeding complete! Added 8 listings and 20 dummy orders.");
+    println!("✅ Database seeding complete!");
     Ok(())
 }
