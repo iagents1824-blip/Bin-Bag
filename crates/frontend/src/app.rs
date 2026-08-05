@@ -58,7 +58,7 @@ pub fn App() -> impl IntoView {
         <Meta name="theme-color" content="#0a0b10"/>
         <Title text="Bin Bag — AI Marketplace"/>
         <Stylesheet href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"/>
-        <Stylesheet href="/style/main.css"/>
+        <Stylesheet id="leptos" href="/pkg/bin-bag.css"/>
 
         <Router>
             <div class="page-wrapper">
