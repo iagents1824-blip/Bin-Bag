@@ -60,18 +60,18 @@ pub fn App() -> impl IntoView {
         <Stylesheet href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"/>
         <Stylesheet id="leptos" href="/pkg/bin-bag.css"/>
 
+        <crate::components::preloader::Preloader/>
+
         <Router>
-            <div class="page-wrapper">
+            <div class="page-wrapper min-h-screen flex flex-col bg-white text-slate-900 antialiased">
                 <Navbar/>
-                <main class="page-content">
+                <main class="page-content flex-grow">
                     <Routes fallback=|| view! {
-                        <div class="container">
-                            <div class="empty-state">
-                                <div class="empty-state-icon">"🔍"</div>
-                                <h2 class="empty-state-title">"Page Not Found"</h2>
-                                <p class="empty-state-text">"The page you're looking for doesn't exist."</p>
-                                <a href="/" class="btn btn-primary">"Go Home"</a>
-                            </div>
+                        <div class="max-w-7xl mx-auto px-4 py-20 text-center">
+                            <div class="text-4xl mb-4">"🔍"</div>
+                            <h2 class="text-2xl font-bold mb-2">"Page Not Found"</h2>
+                            <p class="text-slate-500 mb-6">"The page you're looking for doesn't exist."</p>
+                            <a href="/" class="bg-slate-900 text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-colors">"Go Home"</a>
                         </div>
                     }>
                         <Route path=path!("/") view=HomePage/>

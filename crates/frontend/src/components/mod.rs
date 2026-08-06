@@ -17,3 +17,4 @@ pub mod analytics_card;
 pub mod playground;
 pub mod revenue_chart;
 pub mod category_chart;
+pub mod preloader;
