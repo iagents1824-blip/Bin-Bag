@@ -20,19 +20,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'marketplace' | 'community' | 'directory' | 'news'>('marketplace');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Preloader State
-  const [showPreloader, setShowPreloader] = useState(true);
-  const [fadePreloader, setFadePreloader] = useState(false);
 
-  // Trigger removal from DOM 1 second after fade starts
-  useEffect(() => {
-    if (fadePreloader) {
-      const removeTimer = setTimeout(() => {
-        setShowPreloader(false);
-      }, 1000); // Wait for the 1s CSS transition to finish
-      return () => clearTimeout(removeTimer);
-    }
-  }, [fadePreloader]);
 
   // Local Storage Data Persistent State
   const [assets, setAssets] = useState<MarketplaceAsset[]>(() => {
@@ -143,22 +131,7 @@ export default function App() {
   };
 
   return (
-    <div className={`w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans ${showPreloader ? 'pointer-events-none' : ''}`}>
-      
-      {/* Video Preloader Overlay */}
-      {showPreloader && (
-        <div className={`fixed inset-0 z-[100] bg-[#0A0A0B] flex items-center justify-center transition-opacity duration-1000 ${fadePreloader ? 'opacity-0' : 'opacity-100'}`}>
-          <video 
-            src="/preloader.mp4" 
-            autoPlay 
-            muted 
-            playsInline
-            onEnded={() => setFadePreloader(true)}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-      
+    <div className="w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans">
       {/* Top Navbar */}
       <Navbar
         activeTab={activeTab}
