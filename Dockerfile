@@ -1,72 +1,35 @@
-# Use the official Rust image as a builder
-FROM rust:slim-bookworm AS builder
-
-# Install dependencies required for building Leptos and compiling Rust
-RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libssl-dev \
-    gcc \
-    musl-tools \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install wasm32 target
-RUN rustup target add wasm32-unknown-unknown
-
-# Install cargo-binstall for faster installations
-RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-
-# Install cargo-leptos
-RUN cargo binstall cargo-leptos -y
-
-# Set working directory
-WORKDIR /app
-
-# Limit Cargo to 1 or 2 jobs to avoid Out-Of-Memory (OOM) kills on Railway's free tier
-ENV CARGO_BUILD_JOBS=1
-
-# Copy the entire workspace
-COPY . .
-
-# Build the application in release mode using cargo-leptos
-# This compiles the frontend to WASM and the backend server binary.
-RUN cd crates/frontend && cargo leptos build --release
-
-# Move the binary to a known location regardless of cargo-leptos version
-RUN cp target/release/bin-bag /app/server-bin || cp target/server/release/bin-bag /app/server-bin || cp target/release/bin-bag-frontend /app/server-bin
-
-# Move the site directory to a known location regardless of workspace layout
-RUN mv target/site /app/site-export || mv crates/frontend/target/site /app/site-export || mv target/front/site /app/site-export
-
-# ------------------------------------------------------------------------------
-# Runtime stage
-# ------------------------------------------------------------------------------
-FROM debian:bookworm-slim
-
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    libssl3 \
-    && rm -rf /var/lib/apt/lists/*
+# Build stage
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy the compiled server binary from the builder stage
-COPY --from=builder /app/server-bin /app/bin-bag-frontend
+# Copy package files
+COPY crates/frontend/package.json crates/frontend/package-lock.json ./
+RUN npm ci
 
-# Copy the generated site assets (WASM, CSS, JS, public files)
-COPY --from=builder /app/site-export /app/site
+# Copy source files
+COPY crates/frontend/ .
 
-# Copy Cargo.toml so get_configuration() doesn't panic at runtime
-COPY crates/frontend/Cargo.toml /app/Cargo.toml
+# Build the app
+RUN npm run build
 
-# Ensure migrations are available if the binary runs them automatically
-COPY --from=builder /app/migrations /app/migrations
+# Serve stage
+FROM nginx:alpine
 
-# Set environment variables for Leptos
-ENV LEPTOS_SITE_ROOT="site"
-ENV LEPTOS_SITE_ADDR="0.0.0.0:3000"
-ENV LEPTOS_ENV="PROD"
+# Copy the built assets from the builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Copy a custom nginx configuration to handle SPA routing (fallback to index.html)
+RUN echo 'server { \
+    listen 80; \
+    server_name localhost; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Run the server
-CMD ["/app/bin-bag-frontend"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
