@@ -54,7 +54,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="text-xl font-bold tracking-tighter flex items-center gap-2">
             <div className="w-6 h-6 bg-slate-900 rounded-sm"></div>
-            DATABIN
+            BIN BAG
           </div>
           
           <ul className="hidden lg:flex gap-8 text-sm font-medium text-slate-600">
@@ -82,7 +82,7 @@ function App() {
           <div className="z-10">
             <span className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 block">System Status: Optimal</span>
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6">
-              Master Your <br/><span className="text-slate-400">Binary Flow.</span>
+              Master Your <br/><span className="text-slate-400">AI Workflow.</span>
             </h1>
             <p className="text-slate-500 text-lg mb-10 max-w-md leading-relaxed">
               Ultra-secure data processing at the edge. Scale your infrastructure with zero-latency storage and neural processing.
@@ -276,7 +276,7 @@ function App() {
                 <button className="absolute bottom-4 left-4 right-4 bg-slate-900 text-white text-xs py-3 translate-y-16 group-hover:translate-y-0 transition-transform opacity-0 group-hover:opacity-100 uppercase font-bold tracking-widest z-10">Quick Deploy</button>
               </div>
               <div className="flex justify-between items-start mb-1">
-                <h4 className="font-bold text-sm">Binary Shield Pro</h4>
+                <h4 className="font-bold text-sm">Security Shield Pro</h4>
                 <span className="text-sm font-medium">$45/mo</span>
               </div>
               <div className="flex gap-1 mb-2">
@@ -389,7 +389,7 @@ function App() {
                 <div className="w-1 h-16 bg-slate-900"></div>
                 <div className="w-1 h-10 bg-slate-200"></div>
               </div>
-              <span className="ml-4 text-[10px] font-mono text-slate-400 uppercase whitespace-nowrap">Binary Stream Verification Active</span>
+              <span className="ml-4 text-[10px] font-mono text-slate-400 uppercase whitespace-nowrap">Secure Stream Verification Active</span>
             </div>
           </div>
         </div>
