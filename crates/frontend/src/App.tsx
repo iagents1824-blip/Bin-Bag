@@ -24,21 +24,15 @@ export default function App() {
   const [showPreloader, setShowPreloader] = useState(true);
   const [fadePreloader, setFadePreloader] = useState(false);
 
+  // Trigger removal from DOM 1 second after fade starts
   useEffect(() => {
-    // Start fading out at 9.5s, remove completely at 10.5s
-    const fadeTimer = setTimeout(() => {
-      setFadePreloader(true);
-    }, 9500);
-
-    const removeTimer = setTimeout(() => {
-      setShowPreloader(false);
-    }, 10500);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(removeTimer);
-    };
-  }, []);
+    if (fadePreloader) {
+      const removeTimer = setTimeout(() => {
+        setShowPreloader(false);
+      }, 1000); // Wait for the 1s CSS transition to finish
+      return () => clearTimeout(removeTimer);
+    }
+  }, [fadePreloader]);
 
   // Local Storage Data Persistent State
   const [assets, setAssets] = useState<MarketplaceAsset[]>(() => {
@@ -159,6 +153,7 @@ export default function App() {
             autoPlay 
             muted 
             playsInline
+            onEnded={() => setFadePreloader(true)}
             className="w-full h-full object-cover"
           />
         </div>
