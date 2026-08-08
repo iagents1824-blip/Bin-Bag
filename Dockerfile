@@ -14,22 +14,23 @@ COPY crates/frontend/ .
 RUN npm run build
 
 # Serve stage
-FROM nginx:alpine
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install express for serving static files
+RUN npm install express
 
 # Copy the built assets from the builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /app/dist
 
-# Copy a custom nginx configuration to handle SPA routing (fallback to index.html)
-RUN echo 'server { \
-    listen 80; \
-    server_name localhost; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Create a simple express server to serve the static files and handle SPA routing
+RUN echo "const express = require('express'); \
+const path = require('path'); \
+const app = express(); \
+app.use(express.static(path.join(__dirname, 'dist'))); \
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist', 'index.html'))); \
+const port = process.env.PORT || 8080; \
+app.listen(port, '0.0.0.0', () => console.log('Server is running on port ' + port));" > server.js
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]
