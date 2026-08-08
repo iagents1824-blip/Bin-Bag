@@ -20,6 +20,26 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'marketplace' | 'community' | 'directory' | 'news'>('marketplace');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Preloader State
+  const [showPreloader, setShowPreloader] = useState(true);
+  const [fadePreloader, setFadePreloader] = useState(false);
+
+  useEffect(() => {
+    // Start fading out at 9.5s, remove completely at 10.5s
+    const fadeTimer = setTimeout(() => {
+      setFadePreloader(true);
+    }, 9500);
+
+    const removeTimer = setTimeout(() => {
+      setShowPreloader(false);
+    }, 10500);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
+
   // Local Storage Data Persistent State
   const [assets, setAssets] = useState<MarketplaceAsset[]>(() => {
     const saved = localStorage.getItem('nn_assets');
@@ -129,7 +149,20 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans">
+    <div className={`w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans ${showPreloader ? 'pointer-events-none' : ''}`}>
+      
+      {/* Video Preloader Overlay */}
+      {showPreloader && (
+        <div className={`fixed inset-0 z-[100] bg-[#0A0A0B] flex items-center justify-center transition-opacity duration-1000 ${fadePreloader ? 'opacity-0' : 'opacity-100'}`}>
+          <video 
+            src="/preloader.mp4" 
+            autoPlay 
+            muted 
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       
       {/* Top Navbar */}
       <Navbar
