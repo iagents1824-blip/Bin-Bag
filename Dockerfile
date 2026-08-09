@@ -25,9 +25,15 @@ RUN npm ci --omit=dev
 # Copy the built React assets
 COPY --from=builder /app/dist /app/dist
 
-# Copy backend files
+# Copy backend files and all runtime dependencies
 COPY crates/frontend/server.cjs ./
 COPY crates/frontend/agent.cjs ./
+COPY crates/frontend/agent-config.json ./
+COPY crates/frontend/sources/ ./sources/
+
+# Copy seed data files (flagship-seed.json is required at startup; others are created at runtime)
+RUN mkdir -p data
+COPY crates/frontend/data/flagship-seed.json ./data/
 
 # Start the Express backend (which runs the agent and serves the app)
 CMD ["node", "server.cjs"]
