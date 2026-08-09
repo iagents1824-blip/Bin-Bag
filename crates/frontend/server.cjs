@@ -1,155 +1,104 @@
+'use strict';
 const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
+const cors    = require('cors');
+const path    = require('path');
+const fs      = require('fs');
 const { startScrapingAgent } = require('./agent.cjs');
 
-const app = express();
+const app  = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const dataPath = path.join(__dirname, 'data', 'listings.json');
+const DATA_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-    fs.mkdirSync(path.join(__dirname, 'data'));
-}
-if (!fs.existsSync(dataPath)) {
-    fs.writeFileSync(dataPath, JSON.stringify([]));
+const listingsPath = path.join(DATA_DIR, 'listings.json');
+if (!fs.existsSync(listingsPath)) fs.writeFileSync(listingsPath, '[]', 'utf8');
+
+// ── Cache ──────────────────────────────────────────────────────────────────
+const CACHE_TTL = 5 * 60 * 1000;
+const cache = {};
+
+function readCached(key, filePath) {
+  const now = Date.now();
+  if (cache[key] && (now - cache[key].ts < CACHE_TTL)) return cache[key].data;
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    cache[key] = { data, ts: now };
+    return data;
+  } catch (e) { return null; }
 }
 
+// ── Legacy marketplace listings ────────────────────────────────────────────
 app.get('/api/listings', (req, res) => {
-    try {
-        const rawData = fs.readFileSync(dataPath, 'utf8');
-        const listings = JSON.parse(rawData);
-        res.json(listings);
-    } catch (error) {
-        console.error('Error reading listings:', error);
-        res.status(500).json({ error: 'Failed to load listings' });
-    }
+  res.json(readCached('listings', listingsPath) || []);
 });
 
-// Cache variables for news API
-let newsCache = null;
-let newsCacheTimestamp = 0;
-const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+// ── News (legacy + new unified path) ──────────────────────────────────────
+function serveNews(req, res) {
+  let data = readCached('news', path.join(DATA_DIR, 'news.json')) || [];
+  const { tag } = req.query;
+  if (tag) {
+    const t = tag.toLowerCase();
+    data = data.filter(a =>
+      (a.title  || '').toLowerCase().includes(t) ||
+      (a.summary || '').toLowerCase().includes(t)
+    );
+  }
+  res.json(data);
+}
+app.get('/api/news',              serveNews);
+app.get('/api/listings/news',     serveNews);
 
-// API Endpoint to get daily news
-app.get('/api/news', (req, res) => {
-    try {
-        const now = Date.now();
-        let newsData = [];
-        
-        // Check cache
-        if (newsCache && (now - newsCacheTimestamp < CACHE_DURATION_MS)) {
-            newsData = newsCache;
-        } else {
-            // Read from file
-            const newsPath = path.join(__dirname, 'data', 'news.json');
-            if (fs.existsSync(newsPath)) {
-                const rawData = fs.readFileSync(newsPath, 'utf8');
-                newsData = JSON.parse(rawData);
-                
-                // Update cache
-                newsCache = newsData;
-                newsCacheTimestamp = now;
-            }
-        }
-        
-        // Handle optional ?tag= filter
-        const tag = req.query.tag;
-        if (tag) {
-            const lowerTag = tag.toLowerCase();
-            newsData = newsData.filter(article => 
-                // Dev.to tags usually don't come through our simple scrape unless mapped to category, 
-                // but we can search within title/summary
-                article.title.toLowerCase().includes(lowerTag) || 
-                article.summary.toLowerCase().includes(lowerTag)
-            );
-        }
-        
-        res.json(newsData);
-    } catch (error) {
-        console.error('Error reading news:', error);
-        res.status(500).json({ error: 'Failed to load news' });
-    }
+// ── Category files map ─────────────────────────────────────────────────────
+const CATEGORY_FILES = {
+  models:    'models.json',
+  flagship:  'flagship-seed.json',
+  workflows: 'workflows.json'
+};
+
+const CANDIDATE_FILES = {
+  flagship: 'flagship-candidates.json',
+  tools:    'tools-candidates.json'
+};
+
+// ── GET /api/listings/:category ───────────────────────────────────────────
+app.get('/api/listings/:category', (req, res) => {
+  const { category } = req.params;
+
+  // Candidates sub-route
+  if (req.path.endsWith('/candidates')) return; // handled below
+
+  const file = CATEGORY_FILES[category];
+  if (!file) return res.status(404).json({ error: 'Unknown category: ' + category });
+
+  let data = readCached(category, path.join(DATA_DIR, file));
+  if (!data) return res.json(['models','workflows'].includes(category) ? { new: [], established: [] } : []);
+
+  const { status } = req.query;
+  if (status === 'new'         && data.new         !== undefined) return res.json(data.new);
+  if (status === 'established' && data.established !== undefined) return res.json(data.established);
+  res.json(data);
 });
 
-// Cache variables for models API
-let modelsCache = { broad: null, major: null, candidates: null };
-let modelsCacheTimestamp = { broad: 0, major: 0, candidates: 0 };
-
-app.get('/api/models', (req, res) => {
-    try {
-        const now = Date.now();
-        let data = { new: [], established: [] };
-        if (modelsCache.broad && (now - modelsCacheTimestamp.broad < CACHE_DURATION_MS)) {
-            data = modelsCache.broad;
-        } else {
-            const p = path.join(__dirname, 'data', 'models.json');
-            if (fs.existsSync(p)) {
-                data = JSON.parse(fs.readFileSync(p, 'utf8'));
-                modelsCache.broad = data;
-                modelsCacheTimestamp.broad = now;
-            }
-        }
-        
-        if (req.query.status === 'new') res.json(data.new || []);
-        else if (req.query.status === 'established') res.json(data.established || []);
-        else res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: 'Failed to load models' });
-    }
+// ── GET /api/listings/:category/candidates (admin only) ───────────────────
+app.get('/api/listings/:category/candidates', (req, res) => {
+  const { category } = req.params;
+  const file = CANDIDATE_FILES[category];
+  if (!file) return res.status(404).json({ error: 'No candidates for: ' + category });
+  res.json(readCached(category + '-candidates', path.join(DATA_DIR, file)) || []);
 });
 
-app.get('/api/models/major', (req, res) => {
-    try {
-        const now = Date.now();
-        let data = [];
-        if (modelsCache.major && (now - modelsCacheTimestamp.major < CACHE_DURATION_MS)) {
-            data = modelsCache.major;
-        } else {
-            const p = path.join(__dirname, 'data', 'major-models-seed.json');
-            if (fs.existsSync(p)) {
-                data = JSON.parse(fs.readFileSync(p, 'utf8'));
-                modelsCache.major = data;
-                modelsCacheTimestamp.major = now;
-            }
-        }
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: 'Failed to load major models' });
-    }
-});
-
-app.get('/api/models/major/candidates', (req, res) => {
-    try {
-        const now = Date.now();
-        let data = [];
-        if (modelsCache.candidates && (now - modelsCacheTimestamp.candidates < CACHE_DURATION_MS)) {
-            data = modelsCache.candidates;
-        } else {
-            const p = path.join(__dirname, 'data', 'major-models-candidates.json');
-            if (fs.existsSync(p)) {
-                data = JSON.parse(fs.readFileSync(p, 'utf8'));
-                modelsCache.candidates = data;
-                modelsCacheTimestamp.candidates = now;
-            }
-        }
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: 'Failed to load candidates' });
-    }
-});
-
+// ── Static + SPA catch-all ─────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'dist')));
-
 app.get('*path', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
-    console.log('Server is running on port ' + PORT);
-    startScrapingAgent();
+  console.log('Server is running on port ' + PORT);
+  startScrapingAgent();
 });

@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { NewsTicker } from './components/NewsTicker';
 import { MarketplaceView } from './components/MarketplaceView';
 import { ModelsView } from './components/ModelsView';
+import { WorkflowsView } from './components/WorkflowsView';
 import { CommunityView } from './components/CommunityView';
 import { DirectoryView } from './components/DirectoryView';
 import { NewsView } from './components/NewsView';
@@ -192,6 +193,8 @@ export default function App() {
           } />
 
           <Route path="/models" element={<ModelsView />} />
+
+          <Route path="/workflows" element={<WorkflowsView />} />
 
           <Route path="/community" element={
             <CommunityView

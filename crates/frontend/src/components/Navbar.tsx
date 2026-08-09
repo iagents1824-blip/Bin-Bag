@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, MessageSquare, Compass, Newspaper, Key, PlusCircle, Search, ShieldCheck, Sparkles } from 'lucide-react';
+import { ShoppingBag, MessageSquare, Compass, Newspaper, Key, PlusCircle, Search, ShieldCheck, Sparkles, GitBranch } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
@@ -76,6 +76,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Models</span>
+          </Link>
+
+          <Link
+            to="/workflows"
+            className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
+              currentPath.startsWith('/workflows')
+                ? 'border-white text-white font-bold'
+                : 'border-transparent hover:text-white'
+            }`}
+          >
+            <GitBranch className="w-3.5 h-3.5" />
+            <span className="hidden lg:inline">Workflows</span>
           </Link>
 
           <Link

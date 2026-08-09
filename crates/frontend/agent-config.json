@@ -1,0 +1,7 @@
+[
+  { "category": "news",      "source": "devto",       "schedule": "0 */12 * * *", "autoPublish": true,  "outputFile": "data/news.json"                             },
+  { "category": "models",    "source": "huggingface", "schedule": "0 */8 * * *",  "autoPublish": true,  "outputFile": "data/models.json"                           },
+  { "category": "flagship",  "source": "rssWatch",    "schedule": "0 0 * * *",    "autoPublish": false, "outputFile": "data/flagship-candidates.json", "seedFile": "data/flagship-seed.json" },
+  { "category": "workflows", "source": "github",      "schedule": "0 */8 * * *",  "autoPublish": true,  "outputFile": "data/workflows.json"                        },
+  { "category": "tools",     "source": "producthunt", "schedule": "0 0 * * *",    "autoPublish": false, "outputFile": "data/tools-candidates.json"                 }
+]

@@ -15,7 +15,7 @@
     "stats": {
       "downloads": 242663181,
       "rating": 4.8,
-      "reviewCount": 46,
+      "reviewCount": 59,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -29,7 +29,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -48,7 +48,7 @@
     "stats": {
       "downloads": 117812614,
       "rating": 4.8,
-      "reviewCount": 4,
+      "reviewCount": 12,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -62,7 +62,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google-bert/bert-base-uncased",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -81,7 +81,7 @@
     "stats": {
       "downloads": 83207296,
       "rating": 4.8,
-      "reviewCount": 95,
+      "reviewCount": 10,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -95,7 +95,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -114,7 +114,7 @@
     "stats": {
       "downloads": 68020392,
       "rating": 4.8,
-      "reviewCount": 53,
+      "reviewCount": 25,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -128,7 +128,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/BAAI/bge-small-en-v1.5",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -147,7 +147,7 @@
     "stats": {
       "downloads": 55750925,
       "rating": 4.8,
-      "reviewCount": 26,
+      "reviewCount": 23,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -161,14 +161,14 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
     "id": "621ffdc136468d709f17b61d",
     "title": "google/electra-base-discriminator",
     "tagline": "HuggingFace Model",
-    "description": "A popular trending model fetched live from HuggingFace. ",
+    "description": "A popular trending model fetched live from HuggingFace.",
     "category": "Full Model Weights",
     "price": 0,
     "creator": {
@@ -180,7 +180,7 @@
     "stats": {
       "downloads": 53993918,
       "rating": 4.8,
-      "reviewCount": 67,
+      "reviewCount": 36,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -194,14 +194,14 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google/electra-base-discriminator",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
     "id": "66699700602e723c8cb7d4c4",
     "title": "lpiccinelli/unidepth-v2-vitl14",
     "tagline": "HuggingFace Model",
-    "description": "A popular trending model fetched live from HuggingFace. ",
+    "description": "A popular trending model fetched live from HuggingFace.",
     "category": "Full Model Weights",
     "price": 0,
     "creator": {
@@ -213,7 +213,7 @@
     "stats": {
       "downloads": 38652401,
       "rating": 4.8,
-      "reviewCount": 33,
+      "reviewCount": 57,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -227,7 +227,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/lpiccinelli/unidepth-v2-vitl14",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -246,7 +246,7 @@
     "stats": {
       "downloads": 32716904,
       "rating": 4.8,
-      "reviewCount": 32,
+      "reviewCount": 70,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -260,7 +260,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/BAAI/bge-m3",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -279,7 +279,7 @@
     "stats": {
       "downloads": 31469807,
       "rating": 4.8,
-      "reviewCount": 84,
+      "reviewCount": 81,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -293,7 +293,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/amazon/chronos-2",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -312,7 +312,7 @@
     "stats": {
       "downloads": 27776325,
       "rating": 4.8,
-      "reviewCount": 37,
+      "reviewCount": 58,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -326,7 +326,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/Qwen/Qwen3-0.6B",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -345,7 +345,7 @@
     "stats": {
       "downloads": 23247244,
       "rating": 4.8,
-      "reviewCount": 35,
+      "reviewCount": 30,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -359,7 +359,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -378,7 +378,7 @@
     "stats": {
       "downloads": 22512802,
       "rating": 4.8,
-      "reviewCount": 4,
+      "reviewCount": 27,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -392,7 +392,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google-t5/t5-small",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -411,7 +411,7 @@
     "stats": {
       "downloads": 20333653,
       "rating": 4.8,
-      "reviewCount": 39,
+      "reviewCount": 74,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -425,7 +425,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/openai/clip-vit-base-patch32",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -444,7 +444,7 @@
     "stats": {
       "downloads": 17812976,
       "rating": 4.8,
-      "reviewCount": 49,
+      "reviewCount": 20,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -458,7 +458,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/FacebookAI/xlm-roberta-base",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -477,7 +477,7 @@
     "stats": {
       "downloads": 17717421,
       "rating": 4.8,
-      "reviewCount": 11,
+      "reviewCount": 87,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -491,7 +491,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/BAAI/bge-reranker-v2-m3",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -510,7 +510,7 @@
     "stats": {
       "downloads": 17128035,
       "rating": 4.8,
-      "reviewCount": 2,
+      "reviewCount": 70,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -524,7 +524,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/facebook/opt-125m",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -543,7 +543,7 @@
     "stats": {
       "downloads": 17092682,
       "rating": 4.8,
-      "reviewCount": 67,
+      "reviewCount": 76,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -557,7 +557,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -576,7 +576,7 @@
     "stats": {
       "downloads": 15044963,
       "rating": 4.8,
-      "reviewCount": 14,
+      "reviewCount": 50,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -590,7 +590,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/Qwen/Qwen3-8B",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -609,7 +609,7 @@
     "stats": {
       "downloads": 14732761,
       "rating": 4.8,
-      "reviewCount": 20,
+      "reviewCount": 66,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -623,7 +623,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   },
   {
@@ -642,7 +642,7 @@
     "stats": {
       "downloads": 14357655,
       "rating": 4.8,
-      "reviewCount": 10,
+      "reviewCount": 11,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -656,7 +656,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/intfloat/multilingual-e5-small",
-    "createdAt": "2026-08-09T18:20:17.481Z",
+    "createdAt": "2026-08-09T18:37:26.609Z",
     "featured": false
   }
 ]
