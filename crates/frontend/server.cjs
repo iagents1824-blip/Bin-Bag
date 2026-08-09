@@ -30,6 +30,52 @@ app.get('/api/listings', (req, res) => {
     }
 });
 
+// Cache variables for news API
+let newsCache = null;
+let newsCacheTimestamp = 0;
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+
+// API Endpoint to get daily news
+app.get('/api/news', (req, res) => {
+    try {
+        const now = Date.now();
+        let newsData = [];
+        
+        // Check cache
+        if (newsCache && (now - newsCacheTimestamp < CACHE_DURATION_MS)) {
+            newsData = newsCache;
+        } else {
+            // Read from file
+            const newsPath = path.join(__dirname, 'data', 'news.json');
+            if (fs.existsSync(newsPath)) {
+                const rawData = fs.readFileSync(newsPath, 'utf8');
+                newsData = JSON.parse(rawData);
+                
+                // Update cache
+                newsCache = newsData;
+                newsCacheTimestamp = now;
+            }
+        }
+        
+        // Handle optional ?tag= filter
+        const tag = req.query.tag;
+        if (tag) {
+            const lowerTag = tag.toLowerCase();
+            newsData = newsData.filter(article => 
+                // Dev.to tags usually don't come through our simple scrape unless mapped to category, 
+                // but we can search within title/summary
+                article.title.toLowerCase().includes(lowerTag) || 
+                article.summary.toLowerCase().includes(lowerTag)
+            );
+        }
+        
+        res.json(newsData);
+    } catch (error) {
+        console.error('Error reading news:', error);
+        res.status(500).json({ error: 'Failed to load news' });
+    }
+});
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*path', (req, res) => {

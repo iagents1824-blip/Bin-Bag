@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MarketplaceAsset, CommunityPost, DirectoryItem, NewsItem, VaultPurchase } from './types';
 import { INITIAL_ASSETS, INITIAL_POSTS, INITIAL_DIRECTORY, INITIAL_NEWS } from './data/mockData';
 import { Navbar } from './components/Navbar';
@@ -17,7 +18,6 @@ import { Footer } from './components/Footer';
 
 export default function App() {
   // Navigation State
-  const [activeTab, setActiveTab] = useState<'marketplace' | 'community' | 'directory' | 'news'>('marketplace');
   const [searchQuery, setSearchQuery] = useState('');
 
 
@@ -29,16 +29,25 @@ export default function App() {
   });
 
   useEffect(() => {
+    // Fetch live listings
     fetch('/api/listings')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          // Merge local initial assets with live scraped ones, or just replace
-          // Here we prepend live scraped ones to the initial ones
           setAssets([...data, ...INITIAL_ASSETS]);
         }
       })
       .catch(err => console.error('Error fetching live listings:', err));
+
+    // Fetch live news
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setNews([...data, ...INITIAL_NEWS]);
+        }
+      })
+      .catch(err => console.error('Error fetching live news:', err));
   }, []);
 
   const [posts, setPosts] = useState<CommunityPost[]>(() => {
@@ -144,12 +153,11 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans">
-      {/* Top Navbar */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        vaultCount={vault.length}
+    <BrowserRouter>
+      <div className="w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans">
+        {/* Top Navbar */}
+        <Navbar
+          vaultCount={vault.length}
         onOpenVault={() => setIsVaultOpen(true)}
         onOpenListAsset={() => setIsListAssetOpen(true)}
         onOpenNewPost={() => setIsNewPostOpen(true)}
@@ -165,40 +173,57 @@ export default function App() {
 
       {/* Main Container Views */}
       <main className="flex-1 flex overflow-hidden relative">
-        {activeTab === 'marketplace' && (
-          <MarketplaceView
-            assets={assets}
-            onSelectAsset={(asset) => setSelectedAssetForDetail(asset)}
-            onQuickBuy={(asset) => setSelectedAssetForBuy(asset)}
-            searchQuery={searchQuery}
-          />
-        )}
+        <Routes>
+          <Route path="/" element={
+            <MarketplaceView
+              assets={assets}
+              onSelectAsset={(asset) => setSelectedAssetForDetail(asset)}
+              onQuickBuy={(asset) => setSelectedAssetForBuy(asset)}
+              searchQuery={searchQuery}
+            />
+          } />
+          
+          <Route path="/marketplace/:id" element={
+            <div className="flex items-center justify-center w-full h-full text-[#888]">
+              {/* Future detailed view placeholder */}
+              Listing detail view (coming soon)
+            </div>
+          } />
 
-        {activeTab === 'community' && (
-          <CommunityView
-            posts={posts}
-            onUpvotePost={handleUpvotePost}
-            onAddReply={handleAddReply}
-            onOpenNewPost={() => setIsNewPostOpen(true)}
-            searchQuery={searchQuery}
-          />
-        )}
+          <Route path="/community" element={
+            <CommunityView
+              posts={posts}
+              onUpvotePost={handleUpvotePost}
+              onAddReply={handleAddReply}
+              onOpenNewPost={() => setIsNewPostOpen(true)}
+              searchQuery={searchQuery}
+            />
+          } />
 
-        {activeTab === 'directory' && (
-          <DirectoryView
-            items={directory}
-            searchQuery={searchQuery}
-          />
-        )}
+          <Route path="/directory" element={
+            <DirectoryView
+              items={directory}
+              searchQuery={searchQuery}
+            />
+          } />
 
-        {activeTab === 'news' && (
-          <NewsView
-            news={news}
-            onToggleBookmark={handleToggleBookmarkNews}
-            onSelectNews={(item) => setSelectedNewsForModal(item)}
-            searchQuery={searchQuery}
-          />
-        )}
+          <Route path="/news" element={
+            <NewsView
+              news={news}
+              onToggleBookmark={handleToggleBookmarkNews}
+              onSelectNews={(item) => setSelectedNewsForModal(item)}
+              searchQuery={searchQuery}
+            />
+          } />
+          
+          {/* Catch-all Not Found Route */}
+          <Route path="*" element={
+            <div className="flex flex-col items-center justify-center w-full h-full text-center">
+              <h1 className="text-4xl font-bold text-white mb-2">404</h1>
+              <p className="text-[#888]">The page you're looking for doesn't exist.</p>
+            </div>
+          } />
+        </Routes>
       </main>
 
       {/* Footer Status Bar */}
@@ -247,6 +272,7 @@ export default function App() {
         onToggleBookmark={handleToggleBookmarkNews}
       />
 
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }

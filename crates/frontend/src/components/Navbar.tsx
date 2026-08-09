@@ -1,9 +1,8 @@
 import React from 'react';
 import { ShoppingBag, MessageSquare, Compass, Newspaper, Key, PlusCircle, Search, ShieldCheck } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
-  activeTab: 'marketplace' | 'community' | 'directory' | 'news';
-  setActiveTab: (tab: 'marketplace' | 'community' | 'directory' | 'news') => void;
   vaultCount: number;
   onOpenVault: () => void;
   onOpenListAsset: () => void;
@@ -13,8 +12,6 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  activeTab,
-  setActiveTab,
   vaultCount,
   onOpenVault,
   onOpenListAsset,
@@ -22,6 +19,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   searchQuery,
   setSearchQuery,
 }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  
   return (
     <header className="bg-[#0D0D0E] border-b border-[#262626] sticky top-0 z-40 shrink-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -54,58 +54,58 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Navigation Tabs */}
         <nav className="flex items-center gap-1 sm:gap-6 text-xs font-medium uppercase tracking-widest text-[#888888]">
-          <button
-            onClick={() => setActiveTab('marketplace')}
+          <Link
+            to="/"
             className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
-              activeTab === 'marketplace'
+              currentPath === '/' || currentPath.startsWith('/marketplace')
                 ? 'border-white text-white font-bold'
                 : 'border-transparent hover:text-white'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Marketplace</span>
-          </button>
+          </Link>
 
-          <button
-            onClick={() => setActiveTab('community')}
+          <Link
+            to="/community"
             className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
-              activeTab === 'community'
+              currentPath.startsWith('/community')
                 ? 'border-white text-white font-bold'
                 : 'border-transparent hover:text-white'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Community</span>
-          </button>
+          </Link>
 
-          <button
-            onClick={() => setActiveTab('directory')}
+          <Link
+            to="/directory"
             className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
-              activeTab === 'directory'
+              currentPath.startsWith('/directory')
                 ? 'border-white text-white font-bold'
                 : 'border-transparent hover:text-white'
             }`}
           >
             <Compass className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Directory</span>
-          </button>
+          </Link>
 
-          <button
-            onClick={() => setActiveTab('news')}
+          <Link
+            to="/news"
             className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
-              activeTab === 'news'
+              currentPath.startsWith('/news')
                 ? 'border-white text-white font-bold'
                 : 'border-transparent hover:text-white'
             }`}
           >
             <Newspaper className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline">AI News</span>
-          </button>
+            <span className="hidden lg:inline">News</span>
+          </Link>
         </nav>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2.5 shrink-0">
-          {activeTab === 'marketplace' && (
+          {(currentPath === '/' || currentPath.startsWith('/marketplace')) && (
             <button
               onClick={onOpenListAsset}
               className="hidden sm:flex items-center gap-1.5 bg-[#121214] hover:bg-[#1a1a1e] border border-[#262626] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 transition-all"
