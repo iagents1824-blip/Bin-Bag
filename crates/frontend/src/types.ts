@@ -122,6 +122,7 @@ export interface NewsItem {
   source: string;
   impactLevel: 'Critical' | 'High' | 'Medium';
   url: string;
+  coverImage?: string;
   bookmarked?: boolean;
   readsCount: number;
 }

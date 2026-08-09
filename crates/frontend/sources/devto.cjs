@@ -24,7 +24,9 @@ module.exports = async function fetchDevTo(config, existing) {
       url,
       tag: article.tag_list && article.tag_list[0] ? article.tag_list[0] : 'ai',
       impactLevel: 'Medium',
-      category: 'Open Source'
+      category: 'Open Source',
+      coverImage: article.cover_image || article.social_image || null,
+      readingTime: article.reading_time_minutes || null
     });
   }
 
