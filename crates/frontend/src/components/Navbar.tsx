@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, MessageSquare, Compass, Newspaper, Key, PlusCircle, Search, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, MessageSquare, Compass, Newspaper, Key, PlusCircle, Search, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
@@ -64,6 +64,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Marketplace</span>
+          </Link>
+
+          <Link
+            to="/models"
+            className={`flex items-center gap-1.5 py-2 px-2 border-b-2 transition-colors ${
+              currentPath.startsWith('/models')
+                ? 'border-white text-white font-bold'
+                : 'border-transparent hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden lg:inline">Models</span>
           </Link>
 
           <Link

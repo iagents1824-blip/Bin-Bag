@@ -1,0 +1,83 @@
+[
+  {
+    "familyName": "Claude",
+    "developer": "Anthropic",
+    "category": "LLM",
+    "description": "A family of highly capable AI models designed to be helpful, honest, and harmless, known for advanced reasoning and large context windows.",
+    "officialUrl": "https://www.anthropic.com/claude",
+    "latestKnownVersion": "Claude 3.5 Sonnet",
+    "lastUpdated": "2024-06-20T00:00:00.000Z"
+  },
+  {
+    "familyName": "GPT",
+    "developer": "OpenAI",
+    "category": "LLM",
+    "description": "The flagship generative pre-trained transformer series that pioneered mainstream conversational AI.",
+    "officialUrl": "https://openai.com/chatgpt",
+    "latestKnownVersion": "GPT-4o",
+    "lastUpdated": "2024-05-13T00:00:00.000Z"
+  },
+  {
+    "familyName": "Gemini",
+    "developer": "Google",
+    "category": "Multimodal",
+    "description": "Google's most capable and general model, built from the ground up to be multimodal across text, code, images, and audio.",
+    "officialUrl": "https://deepmind.google/technologies/gemini/",
+    "latestKnownVersion": "Gemini 1.5 Pro",
+    "lastUpdated": "2024-05-14T00:00:00.000Z"
+  },
+  {
+    "familyName": "Llama",
+    "developer": "Meta",
+    "category": "LLM",
+    "description": "A collection of state-of-the-art open source foundation models offering powerful capabilities and high accessibility.",
+    "officialUrl": "https://ai.meta.com/llama/",
+    "latestKnownVersion": "Llama 3.1 405B",
+    "lastUpdated": "2024-07-23T00:00:00.000Z"
+  },
+  {
+    "familyName": "Grok",
+    "developer": "xAI",
+    "category": "LLM",
+    "description": "An AI modeled after the Hitchhiker’s Guide to the Galaxy, intended to answer almost anything and even suggest what questions to ask.",
+    "officialUrl": "https://x.ai/",
+    "latestKnownVersion": "Grok-2",
+    "lastUpdated": "2024-08-13T00:00:00.000Z"
+  },
+  {
+    "familyName": "Mistral",
+    "developer": "Mistral AI",
+    "category": "LLM",
+    "description": "Efficient and highly performant open-weights and commercial models focusing on strong reasoning capabilities.",
+    "officialUrl": "https://mistral.ai/",
+    "latestKnownVersion": "Mistral Large 2",
+    "lastUpdated": "2024-07-24T00:00:00.000Z"
+  },
+  {
+    "familyName": "Qwen",
+    "developer": "Alibaba Cloud",
+    "category": "LLM",
+    "description": "A comprehensive suite of large language models featuring strong multilingual capabilities and open-source accessibility.",
+    "officialUrl": "https://qwenlm.github.io/",
+    "latestKnownVersion": "Qwen2 72B",
+    "lastUpdated": "2024-06-06T00:00:00.000Z"
+  },
+  {
+    "familyName": "DeepSeek",
+    "developer": "DeepSeek",
+    "category": "LLM",
+    "description": "Open-source models noted for excellent coding (DeepSeek-Coder) and reasoning capabilities, built on massive high-quality datasets.",
+    "officialUrl": "https://deepseek.com/",
+    "latestKnownVersion": "DeepSeek-V2",
+    "lastUpdated": "2024-05-06T00:00:00.000Z"
+  },
+  {
+    "familyName": "Seedance",
+    "developer": "ByteDance",
+    "category": "LLM",
+    "description": "The foundational AI model family powering advanced language and multimodal tasks across ByteDance applications.",
+    "officialUrl": "https://www.bytedance.com/",
+    "latestKnownVersion": "Seedance V1",
+    "lastUpdated": "2024-05-15T00:00:00.000Z"
+  }
+]

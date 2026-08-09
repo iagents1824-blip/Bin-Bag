@@ -5,6 +5,7 @@ import { INITIAL_ASSETS, INITIAL_POSTS, INITIAL_DIRECTORY, INITIAL_NEWS } from '
 import { Navbar } from './components/Navbar';
 import { NewsTicker } from './components/NewsTicker';
 import { MarketplaceView } from './components/MarketplaceView';
+import { ModelsView } from './components/ModelsView';
 import { CommunityView } from './components/CommunityView';
 import { DirectoryView } from './components/DirectoryView';
 import { NewsView } from './components/NewsView';
@@ -189,6 +190,8 @@ export default function App() {
               Listing detail view (coming soon)
             </div>
           } />
+
+          <Route path="/models" element={<ModelsView />} />
 
           <Route path="/community" element={
             <CommunityView

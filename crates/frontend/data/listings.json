@@ -1,0 +1,662 @@
+[
+  {
+    "id": "621ffdc136468d709f180294",
+    "title": "sentence-transformers/all-MiniLM-L6-v2",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 242663181,
+      "rating": 4.8,
+      "reviewCount": 46,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "tf",
+      "rust"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc036468d709f174338",
+    "title": "google-bert/bert-base-uncased",
+    "tagline": "Pipeline: fill-mask",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for fill-mask.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 117812614,
+      "rating": 4.8,
+      "reviewCount": 4,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/google-bert/bert-base-uncased",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc136468d709f17a20e",
+    "title": "cross-encoder/ms-marco-MiniLM-L6-v2",
+    "tagline": "Pipeline: text-ranking",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-ranking.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 83207296,
+      "rating": 4.8,
+      "reviewCount": 95,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "jax",
+      "onnx"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "64fff537d522560505ad6567",
+    "title": "BAAI/bge-small-en-v1.5",
+    "tagline": "Pipeline: feature-extraction",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for feature-extraction.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 68020392,
+      "rating": 4.8,
+      "reviewCount": 53,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "onnx",
+      "safetensors"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/BAAI/bge-small-en-v1.5",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc136468d709f1802ec",
+    "title": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 55750925,
+      "rating": 4.8,
+      "reviewCount": 26,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "tf",
+      "onnx"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc136468d709f17b61d",
+    "title": "google/electra-base-discriminator",
+    "tagline": "HuggingFace Model",
+    "description": "A popular trending model fetched live from HuggingFace. ",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 53993918,
+      "rating": 4.8,
+      "reviewCount": 67,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/google/electra-base-discriminator",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "66699700602e723c8cb7d4c4",
+    "title": "lpiccinelli/unidepth-v2-vitl14",
+    "tagline": "HuggingFace Model",
+    "description": "A popular trending model fetched live from HuggingFace. ",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 38652401,
+      "rating": 4.8,
+      "reviewCount": 33,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "UniDepth",
+      "pytorch",
+      "safetensors",
+      "model_hub_mixin"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/lpiccinelli/unidepth-v2-vitl14",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "65b53851e602b6c2c96e78da",
+    "title": "BAAI/bge-m3",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 32716904,
+      "rating": 4.8,
+      "reviewCount": 32,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "onnx",
+      "xlm-roberta"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/BAAI/bge-m3",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "69037c2ff37fdfe285722818",
+    "title": "amazon/chronos-2",
+    "tagline": "Pipeline: time-series-forecasting",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for time-series-forecasting.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 31469807,
+      "rating": 4.8,
+      "reviewCount": 84,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "chronos-forecasting",
+      "safetensors",
+      "t5",
+      "time series"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/amazon/chronos-2",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "680da718233834890aa01f51",
+    "title": "Qwen/Qwen3-0.6B",
+    "tagline": "Pipeline: text-generation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 27776325,
+      "rating": 4.8,
+      "reviewCount": 37,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "safetensors",
+      "qwen3",
+      "text-generation"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/Qwen/Qwen3-0.6B",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc136468d709f180297",
+    "title": "sentence-transformers/all-mpnet-base-v2",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 23247244,
+      "rating": 4.8,
+      "reviewCount": 35,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "onnx",
+      "safetensors"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc036468d709f174358",
+    "title": "google-t5/t5-small",
+    "tagline": "Pipeline: translation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for translation.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 22512802,
+      "rating": 4.8,
+      "reviewCount": 4,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/google-t5/t5-small",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc136468d709f17ea62",
+    "title": "openai/clip-vit-base-patch32",
+    "tagline": "Pipeline: zero-shot-image-classification",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for zero-shot-image-classification.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 20333653,
+      "rating": 4.8,
+      "reviewCount": 39,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/openai/clip-vit-base-patch32",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc036468d709f174364",
+    "title": "FacebookAI/xlm-roberta-base",
+    "tagline": "Pipeline: fill-mask",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for fill-mask.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17812976,
+      "rating": 4.8,
+      "reviewCount": 49,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/FacebookAI/xlm-roberta-base",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "65f44de295b7d70871c368eb",
+    "title": "BAAI/bge-reranker-v2-m3",
+    "tagline": "Pipeline: text-classification",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-classification.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17717421,
+      "rating": 4.8,
+      "reviewCount": 11,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "safetensors",
+      "xlm-roberta",
+      "text-classification"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/BAAI/bge-reranker-v2-m3",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "627b72ed67b1ac7afa4c42a7",
+    "title": "facebook/opt-125m",
+    "tagline": "Pipeline: text-generation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17128035,
+      "rating": 4.8,
+      "reviewCount": 2,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/facebook/opt-125m",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "639c045c34967bcf4564bdc5",
+    "title": "timm/mobilenetv3_small_100.lamb_in1k",
+    "tagline": "Pipeline: image-classification",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for image-classification.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17092682,
+      "rating": 4.8,
+      "reviewCount": 67,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "timm",
+      "pytorch",
+      "safetensors",
+      "image-classification"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "680da79d48c19d19cf82ab5e",
+    "title": "Qwen/Qwen3-8B",
+    "tagline": "Pipeline: text-generation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 15044963,
+      "rating": 4.8,
+      "reviewCount": 14,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "safetensors",
+      "qwen3",
+      "text-generation"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/Qwen/Qwen3-8B",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "65c7188324e59a0e4f89d863",
+    "title": "nomic-ai/nomic-embed-text-v1.5",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 14732761,
+      "rating": 4.8,
+      "reviewCount": 20,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "onnx",
+      "safetensors",
+      "nomic_bert"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  },
+  {
+    "id": "649e84b72ccae3ea1f35fb8b",
+    "title": "intfloat/multilingual-e5-small",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 14357655,
+      "rating": 4.8,
+      "reviewCount": 10,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "onnx",
+      "safetensors"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/intfloat/multilingual-e5-small",
+    "createdAt": "2026-08-09T18:20:17.481Z",
+    "featured": false
+  }
+]

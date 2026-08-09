@@ -76,6 +76,73 @@ app.get('/api/news', (req, res) => {
     }
 });
 
+// Cache variables for models API
+let modelsCache = { broad: null, major: null, candidates: null };
+let modelsCacheTimestamp = { broad: 0, major: 0, candidates: 0 };
+
+app.get('/api/models', (req, res) => {
+    try {
+        const now = Date.now();
+        let data = { new: [], established: [] };
+        if (modelsCache.broad && (now - modelsCacheTimestamp.broad < CACHE_DURATION_MS)) {
+            data = modelsCache.broad;
+        } else {
+            const p = path.join(__dirname, 'data', 'models.json');
+            if (fs.existsSync(p)) {
+                data = JSON.parse(fs.readFileSync(p, 'utf8'));
+                modelsCache.broad = data;
+                modelsCacheTimestamp.broad = now;
+            }
+        }
+        
+        if (req.query.status === 'new') res.json(data.new || []);
+        else if (req.query.status === 'established') res.json(data.established || []);
+        else res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to load models' });
+    }
+});
+
+app.get('/api/models/major', (req, res) => {
+    try {
+        const now = Date.now();
+        let data = [];
+        if (modelsCache.major && (now - modelsCacheTimestamp.major < CACHE_DURATION_MS)) {
+            data = modelsCache.major;
+        } else {
+            const p = path.join(__dirname, 'data', 'major-models-seed.json');
+            if (fs.existsSync(p)) {
+                data = JSON.parse(fs.readFileSync(p, 'utf8'));
+                modelsCache.major = data;
+                modelsCacheTimestamp.major = now;
+            }
+        }
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to load major models' });
+    }
+});
+
+app.get('/api/models/major/candidates', (req, res) => {
+    try {
+        const now = Date.now();
+        let data = [];
+        if (modelsCache.candidates && (now - modelsCacheTimestamp.candidates < CACHE_DURATION_MS)) {
+            data = modelsCache.candidates;
+        } else {
+            const p = path.join(__dirname, 'data', 'major-models-candidates.json');
+            if (fs.existsSync(p)) {
+                data = JSON.parse(fs.readFileSync(p, 'utf8'));
+                modelsCache.candidates = data;
+                modelsCacheTimestamp.candidates = now;
+            }
+        }
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to load candidates' });
+    }
+});
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*path', (req, res) => {
