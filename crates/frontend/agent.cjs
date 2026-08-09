@@ -12,16 +12,32 @@ async function scrapeHuggingFace() {
         const response = await axios.get('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=20');
         
         const models = response.data.map(model => ({
-            id: model._id,
+            id: model._id || model.modelId,
             title: model.modelId,
-            description: 'A popular model from HuggingFace. ' + (model.pipeline_tag ? `Pipeline: ${model.pipeline_tag}` : ''),
-            price: 'Free',
-            author: model.author || 'Community',
-            type: 'Model',
-            tags: model.tags ? model.tags.slice(0, 3) : ['AI'],
-            rating: 5.0,
-            downloads: model.downloads || 0,
-            isNew: true
+            tagline: model.pipeline_tag ? `Pipeline: ${model.pipeline_tag}` : 'HuggingFace Model',
+            description: 'A popular trending model fetched live from HuggingFace. ' + (model.pipeline_tag ? `Optimized for ${model.pipeline_tag}.` : ''),
+            category: 'Full Model Weights',
+            price: 0,
+            creator: {
+                name: model.author || 'Community',
+                handle: `@${model.author || 'hf_community'}`,
+                verified: true,
+                avatar: `https://api.dicebear.com/7.x/identicon/svg?seed=${model.author || 'hf'}`
+            },
+            stats: {
+                downloads: model.downloads || 0,
+                rating: 4.8,
+                reviewCount: Math.floor(Math.random() * 100),
+                efficiencyScore: 'A'
+            },
+            tags: model.tags ? model.tags.slice(0, 4) : ['AI'],
+            specs: {
+                framework: 'PyTorch',
+                format: 'Safetensors'
+            },
+            downloadUrl: `https://huggingface.co/${model.modelId}`,
+            createdAt: new Date().toISOString(),
+            featured: false
         }));
 
         // Write the data to listings.json
