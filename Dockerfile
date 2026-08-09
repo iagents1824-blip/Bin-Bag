@@ -18,12 +18,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install the 'serve' package globally
-RUN npm install -g serve
+# Copy package files and install production dependencies
+COPY crates/frontend/package.json crates/frontend/package-lock.json ./
+RUN npm ci --omit=dev
 
-# Copy the built assets from the builder stage
+# Copy the built React assets
 COPY --from=builder /app/dist /app/dist
 
-# Serve the static files
-# The 'serve' package automatically listens on process.env.PORT if available
-CMD ["serve", "-s", "dist"]
+# Copy backend files
+COPY crates/frontend/server.cjs ./
+COPY crates/frontend/agent.cjs ./
+
+# Start the Express backend (which runs the agent and serves the app)
+CMD ["node", "server.cjs"]

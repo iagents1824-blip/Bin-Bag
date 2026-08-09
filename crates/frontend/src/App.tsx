@@ -28,6 +28,19 @@ export default function App() {
     return saved ? JSON.parse(saved) : INITIAL_ASSETS;
   });
 
+  useEffect(() => {
+    fetch('/api/listings')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Merge local initial assets with live scraped ones, or just replace
+          // Here we prepend live scraped ones to the initial ones
+          setAssets([...data, ...INITIAL_ASSETS]);
+        }
+      })
+      .catch(err => console.error('Error fetching live listings:', err));
+  }, []);
+
   const [posts, setPosts] = useState<CommunityPost[]>(() => {
     const saved = localStorage.getItem('nn_posts');
     return saved ? JSON.parse(saved) : INITIAL_POSTS;
