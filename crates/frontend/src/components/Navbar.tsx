@@ -27,8 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
         {/* Brand Logo */}
-        <div 
-          onClick={() => setActiveTab('marketplace')}
+        <Link 
+          to="/"
           className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
           <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center transition-transform group-hover:scale-105">
@@ -38,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-lg font-bold tracking-tighter text-white block leading-none">BIN BAG</span>
             <span className="text-[9px] font-mono text-[#00FF41] tracking-widest uppercase block mt-1">AI MARKETPLACE & HUB</span>
           </div>
-        </div>
+        </Link>
 
         {/* Global Search Bar */}
         <div className="hidden md:flex items-center flex-1 max-w-xs mx-4 relative">
@@ -115,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {activeTab === 'community' && (
+          {currentPath.startsWith('/community') && (
             <button
               onClick={onOpenNewPost}
               className="hidden sm:flex items-center gap-1.5 bg-[#121214] hover:bg-[#1a1a1e] border border-[#262626] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 transition-all"
