@@ -6,9 +6,9 @@ const NAV_ITEMS = [
   { to: '/',           label: 'Home',       icon: Home },
   { to: '/explore',    label: 'Explore',    icon: Compass },
   { to: '/directory',  label: 'Saved',      icon: Bookmark },
+  { to: '/news',       label: 'News',       icon: Newspaper },
   { to: '/community',  label: 'Community',  icon: Users },
   { to: '/models',     label: 'Models',     icon: Brain },
-  { to: '/news',       label: 'News',       icon: Newspaper },
   { to: '/workflows',  label: 'Workflows',  icon: GitBranch },
 ];
 
@@ -90,22 +90,22 @@ export const Sidebar: React.FC<{ onOpenVault?: () => void; vaultCount?: number }
       </aside>
 
       {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 flex items-center justify-around px-2 py-2 safe-area-pb">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom,16px)] pt-2 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
         {NAV_ITEMS.slice(0, 5).map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
-              `flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-all ${
-                isActive ? 'text-[#0A0A0A]' : 'text-gray-400'
+              `flex flex-col items-center justify-center gap-1 min-w-[64px] h-12 rounded-xl transition-all ${
+                isActive ? 'text-[#0A0A0A]' : 'text-gray-400 hover:text-gray-600'
               }`
             }
           >
             {({ isActive }) => (
               <>
-                <Icon className={`w-5 h-5 ${isActive ? 'text-[#0A0A0A]' : 'text-gray-400'}`} />
-                <span className="text-[9px] font-medium">{label}</span>
+                <Icon className={`w-[22px] h-[22px] ${isActive ? 'text-[#0A0A0A]' : 'text-gray-400'}`} />
+                <span className={`text-[10px] font-semibold tracking-tight ${isActive ? 'text-[#0A0A0A]' : 'text-gray-400'}`}>{label}</span>
               </>
             )}
           </NavLink>

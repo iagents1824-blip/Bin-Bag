@@ -19,9 +19,11 @@ import { VaultModal } from './components/VaultModal';
 import { ListAssetModal } from './components/ListAssetModal';
 import { NewPostModal } from './components/NewPostModal';
 import { NewsArticleModal } from './components/NewsArticleModal';
+import { MobileSearchOverlay } from './components/MobileSearchOverlay';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const [assets, setAssets] = useState<MarketplaceAsset[]>(() => {
     const saved = localStorage.getItem('nn_assets');
@@ -114,12 +116,14 @@ export default function App() {
       <div className="h-screen overflow-hidden bg-[#F0EFE9] flex font-sans">
         <Sidebar vaultCount={vault.length} onOpenVault={() => setIsVaultOpen(true)} />
 
-        <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Added pb-16 to avoid bottom nav bar on mobile */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden pb-[4.5rem] md:pb-0">
           <div className="px-4 pt-3">
             <TopBar
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               onToggleListAsset={() => setIsListAssetOpen(true)}
+              onOpenMobileSearch={() => setIsMobileSearchOpen(true)}
             />
           </div>
 
@@ -187,6 +191,8 @@ export default function App() {
           </main>
         </div>
       </div>
+
+      <MobileSearchOverlay isOpen={isMobileSearchOpen} onClose={() => setIsMobileSearchOpen(false)} />
 
       <AssetDetailModal
         asset={selectedAssetForDetail}
