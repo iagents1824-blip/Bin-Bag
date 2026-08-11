@@ -1,0 +1,45 @@
+{
+  "taxonomy": {
+    "categories": ["chatbot", "audio", "video", "image", "document", "code", "writing", "agent", "api", "browser-extension", "other"],
+    "subcategories": {
+      "chatbot":    ["general-purpose", "customer-support", "roleplay", "productivity"],
+      "audio":      ["text-to-speech", "speech-to-text", "music-generation", "voice-cloning"],
+      "video":      ["text-to-video", "video-editing", "video-summarization"],
+      "image":      ["text-to-image", "image-editing", "upscaling", "background-removal"],
+      "document":   ["pdf-reader", "summarizer", "rag", "ocr"],
+      "code":       ["code-completion", "debugging", "code-review", "test-generation"],
+      "writing":    ["copywriting", "long-form", "email", "seo"],
+      "agent":      ["autonomous-agent", "multi-agent", "workflow-automation"],
+      "api":        ["llm-api", "embedding-api", "moderation-api"],
+      "browser-extension": ["productivity", "summarization", "writing-assistant"],
+      "other":      ["research", "analytics", "data-extraction"]
+    }
+  },
+  "scoring": {
+    "autoPublishThreshold": 70,
+    "minDescriptionLength": 40,
+    "weights": {
+      "hasWorkingUrl": 30,
+      "hasDescription": 20,
+      "hasLogo": 10,
+      "hasPricing": 10,
+      "hasTags": 10,
+      "sourceReliability": 20
+    },
+    "sourceReliabilityScores": {
+      "producthunt": 1.0,
+      "huggingface": 1.0,
+      "rss-labs": 0.9,
+      "github": 0.8
+    }
+  },
+  "dedup": {
+    "domainMatchWeight": 60,
+    "nameSimThreshold": 0.80,
+    "domainThreshold": 1.0
+  },
+  "retention": {
+    "maxPendingReviewAgeDays": 30,
+    "maxAutoPublishedEntries": 500
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "producthunt": {
+    "enabled": false,
+    "note": "Requires PRODUCTHUNT_TOKEN env var. Set enabled:true once token is configured."
+  },
+  "huggingface": {
+    "enabled": true,
+    "limitPerRun": 50,
+    "minLikes": 5
+  },
+  "rss-labs": {
+    "enabled": true,
+    "feeds": [
+      { "name": "OpenAI",      "url": "https://openai.com/news/rss.xml" },
+      { "name": "Google AI",   "url": "https://blog.google/technology/ai/rss/" },
+      { "name": "HuggingFace", "url": "https://huggingface.co/blog/feed.xml" },
+      { "name": "Anthropic",   "url": "https://www.anthropic.com/news/rss" },
+      { "name": "Mistral",     "url": "https://mistral.ai/news/rss" },
+      { "name": "ElevenLabs",  "url": "https://elevenlabs.io/blog/rss" },
+      { "name": "Stability",   "url": "https://stability.ai/news/rss.xml" }
+    ]
+  },
+  "github": {
+    "enabled": true,
+    "topics": ["ai-agent", "llm", "text-to-image", "voice-ai", "ai-tool"],
+    "minStars": 50
+  }
+}

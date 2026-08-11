@@ -92,6 +92,25 @@ app.get('/api/listings/:category/candidates', (req, res) => {
   res.json(readCached(category + '-candidates', path.join(DATA_DIR, file)) || []);
 });
 
+// ── Auto-listings public feed (auto_published only) ──────────────────────
+app.get('/api/auto-listings', (req, res) => {
+  const autoFile = path.join(DATA_DIR, 'auto-listings.json');
+  const all = readCached('auto-listings', autoFile) || [];
+  const { category, status } = req.query;
+  let data = all.filter(l => l.status === 'auto_published');
+  if (category) data = data.filter(l => l.category === category);
+  res.json(data);
+});
+
+// ── Admin router (pipeline review queue) ──────────────────────────────
+try {
+  const adminRouter = require('./pipeline/admin/admin-server.cjs');
+  app.use('/admin', adminRouter);
+  console.log('Admin routes mounted at /admin');
+} catch (err) {
+  console.warn('Admin pipeline routes not available:', err.message);
+}
+
 // ── Static + SPA catch-all ─────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'dist')));
 app.get('*path', (req, res) => {

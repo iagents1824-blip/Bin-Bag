@@ -109,6 +109,21 @@ function startScrapingAgent() {
   }
 
   console.log('[Agent] All schedules registered.');
+
+  // ── Auto-Listing Pipeline (daily at 03:00) ────────────────────────────
+  try {
+    const { runPipeline } = require('./pipeline/runner.cjs');
+    // Run once on startup (so first deploy populates data immediately)
+    runPipeline().catch(err => console.error('[Pipeline] Startup run failed:', err.message));
+    // Then daily at 03:00 server time
+    cron.schedule('0 3 * * *', () => {
+      console.log('[Pipeline] Running daily auto-listing pipeline...');
+      runPipeline().catch(err => console.error('[Pipeline] Daily run failed:', err.message));
+    });
+    console.log('[Agent] Auto-listing pipeline scheduled (daily 03:00).');
+  } catch (err) {
+    console.warn('[Agent] Pipeline not available (missing dependencies?):', err.message);
+  }
 }
 
 module.exports = { startScrapingAgent };
