@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Zap, Crown } from 'lucide-react';
+import { TrendingUp, Zap, Crown, ChevronDown } from 'lucide-react';
 import { AI_COMPANIES, ALL_TOOLS, CATEGORIES, AICompany, AITool } from '../../data/mockAIData';
 import { ToolProfileHero } from './ToolProfileHero';
 import { ListingCard } from '../cards/ListingCard';
@@ -15,6 +15,7 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
   const [featuredCompany] = useState<AICompany>(AI_COMPANIES[0]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
+  const [displayLimit, setDisplayLimit] = useState(32);
 
   const filtered = ALL_TOOLS.filter(t => {
     const q = searchQuery.toLowerCase();
@@ -22,6 +23,8 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
     const matchCat = activeCategory === 'all' || t.category.toLowerCase().includes(activeCategory);
     return matchQ && matchCat;
   });
+
+  const visibleTools = filtered.slice(0, displayLimit);
 
   const handleSaveTool = (tool: AITool) => {
     setSavedTools(prev => {
@@ -42,14 +45,14 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
   };
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 pb-8 pt-2">
+    <div className="flex-1 overflow-y-auto px-4 pb-12 pt-2">
 
       {/* Category pills */}
       <div className="flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+            onClick={() => { setActiveCategory(cat.id); setDisplayLimit(32); }}
             className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
               activeCategory === cat.id
                 ? 'bg-[#0A0A0A] text-white shadow-md'
@@ -108,33 +111,55 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
         </div>
       )}
 
-      {/* Tool grid */}
+      {/* Dense Listing Grid */}
       <section>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-indigo-500" />
             <h2 className="font-bold text-[#0A0A0A] text-lg">
-              {activeCategory === 'all' ? 'All Tools' : CATEGORIES.find(c => c.id === activeCategory)?.label}
+              {activeCategory === 'all' ? 'All AI Tools & Models' : CATEGORIES.find(c => c.id === activeCategory)?.label}
             </h2>
-            <span className="text-sm text-gray-400 font-normal">({filtered.length})</span>
+            <span className="text-sm text-gray-500 font-semibold bg-gray-100 border border-gray-200 px-2.5 py-0.5 rounded-full">
+              {filtered.length} tools indexed
+            </span>
           </div>
         </div>
+
         {filtered.length === 0 ? (
           <div className="py-16 text-center">
             <p className="text-gray-400 text-sm">No tools found for "{searchQuery}"</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filtered.map(tool => (
-              <ListingCard
-                key={tool.id}
-                tool={tool}
-                onClick={() => onToolClick?.(tool.id)}
-                onSave={() => handleSaveTool(tool)}
-                saved={savedTools.has(tool.id)}
-              />
-            ))}
-          </div>
+          <>
+            {/* Dense 6-8 Column Desktop Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 sm:gap-4">
+              {visibleTools.map(tool => (
+                <ListingCard
+                  key={tool.id}
+                  tool={tool}
+                  onClick={() => onToolClick?.(tool.id)}
+                  onSave={() => handleSaveTool(tool)}
+                  saved={savedTools.has(tool.id)}
+                />
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            {visibleTools.length < filtered.length && (
+              <div className="mt-10 text-center flex flex-col items-center">
+                <p className="text-xs text-gray-400 mb-3 font-semibold">
+                  Showing {visibleTools.length} of {filtered.length} tools
+                </p>
+                <button
+                  onClick={() => setDisplayLimit(prev => prev + 32)}
+                  className="bg-[#0A0A0A] hover:bg-black text-white px-8 py-3 rounded-full text-xs font-bold transition-all shadow-md flex items-center gap-2"
+                >
+                  <span>Load More AI Tools</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>
