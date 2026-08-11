@@ -111,10 +111,10 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#F0EFE9] flex font-sans">
+      <div className="h-screen overflow-hidden bg-[#F0EFE9] flex font-sans">
         <Sidebar vaultCount={vault.length} onOpenVault={() => setIsVaultOpen(true)} />
 
-        <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
+        <div className="flex-1 flex flex-col h-full overflow-hidden">
           <div className="px-4 pt-3">
             <TopBar
               searchQuery={searchQuery}
