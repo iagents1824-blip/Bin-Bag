@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GitBranch, Star, Clock, ArrowUpRight, Activity } from 'lucide-react';
+import { GitBranch, Star, Clock, ArrowUpRight, Activity, Plus, Check } from 'lucide-react';
 
 interface Repo {
   id: number;
@@ -14,23 +14,52 @@ interface Repo {
   status: string;
 }
 
-function RepoCard({ repo }: { repo: Repo }) {
+interface WorkflowsViewProps {
+  onAddToCollection?: (item: { title: string; category: string; url?: string; key?: string; price?: number }) => void;
+}
+
+function RepoCard({ repo, onSave }: { repo: Repo; onSave?: () => void }) {
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onSave?.();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1500);
+  };
+
   return (
-    <a
-      href={repo.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-white border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:shadow-md hover:border-gray-300 transition-all group"
-    >
+    <div className="bg-white border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:shadow-md hover:border-gray-300 transition-all group">
       <div>
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 min-w-0">
             <GitBranch className="w-4 h-4 text-[#4F46E5] shrink-0" />
-            <span className="text-sm font-bold text-[#0A0A0A] truncate group-hover:text-[#4F46E5] transition-colors">
+            <a
+              href={repo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-bold text-[#0A0A0A] truncate hover:text-[#4F46E5] transition-colors"
+            >
               {repo.fullName}
-            </span>
+            </a>
           </div>
-          <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#4F46E5] shrink-0 transition-colors" />
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={handleSave}
+              title="Save to Collection"
+              className={`p-1.5 rounded-full border transition-all ${
+                saved
+                  ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                  : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+              }`}
+            >
+              {saved ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+            </button>
+            <a href={repo.url} target="_blank" rel="noopener noreferrer">
+              <ArrowUpRight className="w-4 h-4 text-gray-400 hover:text-[#4F46E5] transition-colors" />
+            </a>
+          </div>
         </div>
         {repo.description && (
           <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">{repo.description}</p>
@@ -57,11 +86,11 @@ function RepoCard({ repo }: { repo: Repo }) {
           ))}
         </div>
       </div>
-    </a>
+    </div>
   );
 }
 
-export const WorkflowsView: React.FC = () => {
+export const WorkflowsView: React.FC<WorkflowsViewProps> = ({ onAddToCollection }) => {
   const [newRepos, setNewRepos] = useState<Repo[]>([]);
   const [starredRepos, setStarredRepos] = useState<Repo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,6 +114,14 @@ export const WorkflowsView: React.FC = () => {
     };
     load();
   }, []);
+
+  const handleSaveRepo = (repo: Repo) => {
+    onAddToCollection?.({
+      title: repo.fullName,
+      category: 'GitHub Workflow Repo',
+      url: repo.url,
+    });
+  };
 
   return (
     <div className="flex-1 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
@@ -116,7 +153,9 @@ export const WorkflowsView: React.FC = () => {
                 <p className="text-sm text-gray-400 italic">No new repos yet — backend agent populates daily.</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {newRepos.slice(0, 12).map(r => <RepoCard key={r.id} repo={r} />)}
+                  {newRepos.slice(0, 12).map(r => (
+                    <RepoCard key={r.id} repo={r} onSave={() => handleSaveRepo(r)} />
+                  ))}
                 </div>
               )}
             </section>
@@ -131,7 +170,9 @@ export const WorkflowsView: React.FC = () => {
                 <p className="text-sm text-gray-400 italic">No repos yet — backend agent populates daily.</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {starredRepos.slice(0, 18).map(r => <RepoCard key={r.id} repo={r} />)}
+                  {starredRepos.slice(0, 18).map(r => (
+                    <RepoCard key={r.id} repo={r} onSave={() => handleSaveRepo(r)} />
+                  ))}
                 </div>
               )}
             </section>

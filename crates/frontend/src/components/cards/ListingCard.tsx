@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { Plus, Bookmark, BookmarkCheck, Star } from 'lucide-react';
+import { Plus, Bookmark, BookmarkCheck, Star, Check } from 'lucide-react';
 import { AITool } from '../../data/mockAIData';
 
 interface ListingCardProps {
   tool: AITool;
   onClick?: () => void;
-  onSave?: () => void;
+  onSave?: (tool: AITool) => void;
   saved?: boolean;
 }
 
 export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave, saved }) => {
   const [imgError, setImgError] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
+
+  const handleSaveClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSave?.(tool);
+    setJustSaved(true);
+    setTimeout(() => setJustSaved(false), 1500);
+  };
 
   return (
     <div
@@ -35,12 +43,13 @@ export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave,
 
         {/* Save button */}
         <button
-          onClick={e => { e.stopPropagation(); onSave?.(); }}
-          className="absolute top-3 right-3 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+          onClick={handleSaveClick}
+          title="Save to Collection"
+          className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
         >
-          {saved
-            ? <BookmarkCheck className="w-3.5 h-3.5 text-indigo-600" />
-            : <Bookmark className="w-3.5 h-3.5 text-gray-500" />
+          {saved || justSaved
+            ? <BookmarkCheck className="w-4 h-4 text-emerald-600" />
+            : <Bookmark className="w-4 h-4 text-gray-600" />
           }
         </button>
 
@@ -66,10 +75,13 @@ export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave,
             <p className="text-xs text-gray-500 mt-0.5 truncate">{tool.company}</p>
           </div>
           <button
-            onClick={e => { e.stopPropagation(); }}
-            className="w-7 h-7 bg-[#0A0A0A] rounded-full flex items-center justify-center shrink-0 hover:bg-indigo-600 transition-colors ml-2"
+            onClick={handleSaveClick}
+            title="Add to Collection"
+            className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ml-2 ${
+              justSaved ? 'bg-emerald-600 text-white' : 'bg-[#0A0A0A] text-white hover:bg-indigo-600'
+            }`}
           >
-            <Plus className="w-3.5 h-3.5 text-white" />
+            {justSaved ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           </button>
         </div>
 

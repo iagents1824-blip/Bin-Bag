@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { MarketplaceAsset, AssetCategory } from '../types';
-import { Download, Star, Zap } from 'lucide-react';
+import { Download, Star, Zap, Plus, Check } from 'lucide-react';
 
 interface MarketplaceViewProps {
   assets: MarketplaceAsset[];
   onSelectAsset: (asset: MarketplaceAsset) => void;
   onQuickBuy: (asset: MarketplaceAsset) => void;
   searchQuery: string;
+  onAddToCollection?: (item: { title: string; category: string; url?: string; key?: string; price?: number }) => void;
 }
 
 const CATEGORIES: Array<{ label: string; value: AssetCategory | 'All' }> = [
@@ -24,10 +25,12 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
   onSelectAsset,
   onQuickBuy,
   searchQuery,
+  onAddToCollection,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory | 'All'>('All');
   const [priceFilter, setPriceFilter] = useState<'All' | 'Free' | 'Paid'>('All');
   const [sortBy, setSortBy] = useState<'downloads' | 'rating' | 'newest'>('downloads');
+  const [savedMap, setSavedMap] = useState<Record<string, boolean>>({});
 
   const filteredAssets = assets
     .filter(asset => {
@@ -48,6 +51,19 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
       if (sortBy === 'rating') return b.stats.rating - a.stats.rating;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
+
+  const handleSaveAsset = (asset: MarketplaceAsset) => {
+    onAddToCollection?.({
+      title: asset.title,
+      category: asset.category,
+      price: asset.price,
+      url: asset.downloadUrl,
+    });
+    setSavedMap(prev => ({ ...prev, [asset.id]: true }));
+    setTimeout(() => {
+      setSavedMap(prev => ({ ...prev, [asset.id]: false }));
+    }, 1500);
+  };
 
   return (
     <div className="flex-1 flex flex-col p-4 sm:p-8 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
@@ -134,9 +150,22 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                 <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
                   {asset.category}
                 </span>
-                <span className={`text-xs font-bold ${asset.price === 0 ? 'text-emerald-600' : 'text-[#0A0A0A]'}`}>
-                  {asset.price === 0 ? 'Free' : `$${asset.price}`}
-                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleSaveAsset(asset)}
+                    title="Save to Collection"
+                    className={`p-1.5 rounded-full border transition-all ${
+                      savedMap[asset.id]
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                        : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+                    }`}
+                  >
+                    {savedMap[asset.id] ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                  </button>
+                  <span className={`text-xs font-bold ${asset.price === 0 ? 'text-emerald-600' : 'text-[#0A0A0A]'}`}>
+                    {asset.price === 0 ? 'Free' : `$${asset.price}`}
+                  </span>
+                </div>
               </div>
 
               <h3 className="text-lg font-bold text-[#0A0A0A] mb-1 group-hover:text-[#4F46E5] transition-colors">
@@ -194,7 +223,10 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                   Details
                 </button>
                 <button
-                  onClick={() => onQuickBuy(asset)}
+                  onClick={() => {
+                    handleSaveAsset(asset);
+                    onQuickBuy(asset);
+                  }}
                   className="px-3 py-1.5 rounded-xl bg-[#0A0A0A] hover:bg-black text-white text-xs font-bold transition-colors shadow-xs"
                 >
                   {asset.price === 0 ? 'Get Free' : 'Acquire'}

@@ -70,8 +70,24 @@ export default function App() {
   const handleAddPost  = (p: CommunityPost)    => setPosts(prev => [p, ...prev]);
   
   // Collections handlers
-  const handleAddVault    = (v: VaultPurchase) => setVault(p => [v, ...p.filter(item => item.id !== v.id)]);
-  const handleRemoveVault = (id: string)        => setVault(p => p.filter(item => item.id !== id));
+  const handleAddVault = (v: VaultPurchase) => setVault(p => [v, ...p.filter(item => item.id !== v.id)]);
+
+  const handleAddToCollection = (item: { title: string; category: string; url?: string; key?: string; price?: number }) => {
+    const newItem: VaultPurchase = {
+      id: `purch-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      assetId: `saved-${Date.now()}`,
+      assetTitle: item.title,
+      assetCategory: item.category,
+      purchaseDate: new Date().toISOString().split('T')[0],
+      amountPaid: item.price || 0,
+      licenseKey: item.key || `BB-SAVED-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+      apiEndpoint: item.url || 'https://api.binbag.ai/v1/saved-item',
+      downloadUrl: item.url || '#',
+    };
+    setVault(prev => [newItem, ...prev.filter(p => p.assetTitle !== newItem.assetTitle)]);
+  };
+
+  const handleRemoveVault = (id: string) => setVault(p => p.filter(item => item.id !== id));
 
   const handleUpvotePost = (id: string) =>
     setPosts(prev => prev.map(p => p.id === id
@@ -108,8 +124,8 @@ export default function App() {
 
           <main className="flex-1 overflow-hidden flex">
             <Routes>
-              <Route path="/"        element={<ExploreView searchQuery={searchQuery} />} />
-              <Route path="/explore" element={<ExploreView searchQuery={searchQuery} />} />
+              <Route path="/" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
+              <Route path="/explore" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
 
               <Route path="/marketplace" element={
                 <MarketplaceView
@@ -117,11 +133,21 @@ export default function App() {
                   onSelectAsset={a => setSelectedAssetForDetail(a)}
                   onQuickBuy={a => setSelectedAssetForBuy(a)}
                   searchQuery={searchQuery}
+                  onAddToCollection={handleAddToCollection}
                 />
               } />
 
-              <Route path="/models"    element={<div className="flex-1 overflow-hidden flex"><ModelsView /></div>} />
-              <Route path="/workflows" element={<div className="flex-1 overflow-hidden flex"><WorkflowsView /></div>} />
+              <Route path="/models" element={
+                <div className="flex-1 overflow-hidden flex">
+                  <ModelsView onAddToCollection={handleAddToCollection} />
+                </div>
+              } />
+
+              <Route path="/workflows" element={
+                <div className="flex-1 overflow-hidden flex">
+                  <WorkflowsView onAddToCollection={handleAddToCollection} />
+                </div>
+              } />
 
               <Route path="/community" element={
                 <div className="flex-1 overflow-hidden flex">
@@ -135,7 +161,7 @@ export default function App() {
                 </div>
               } />
 
-              <Route path="/directory" element={<DirectoryView items={directory} searchQuery={searchQuery} />} />
+              <Route path="/directory" element={<DirectoryView items={directory} searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
 
               <Route path="/news" element={
                 <div className="flex-1 overflow-hidden flex">

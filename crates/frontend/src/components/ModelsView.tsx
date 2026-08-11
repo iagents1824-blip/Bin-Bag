@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Activity, Clock, ShieldCheck, Download, ThumbsUp } from 'lucide-react';
+import { Sparkles, Activity, Clock, ShieldCheck, Download, ThumbsUp, Plus, Check } from 'lucide-react';
 
 interface FlagshipModel {
   familyName: string;
@@ -24,14 +24,27 @@ interface BroadModel {
   status: string;
 }
 
+interface ModelsViewProps {
+  onAddToCollection?: (item: { title: string; category: string; url?: string; key?: string; price?: number }) => void;
+}
+
 const KIND_BADGE: Record<string, { label: string; color: string }> = {
   model:   { label: 'Model',        color: 'text-indigo-600 bg-indigo-50 border-indigo-200' },
   chatbot: { label: 'Chatbot',      color: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
   both:    { label: 'Model + Chat', color: 'text-amber-600 bg-amber-50 border-amber-200' },
 };
 
-function FlagshipCard({ model }: { model: FlagshipModel }) {
+function FlagshipCard({ model, onSave }: { model: FlagshipModel; onSave?: () => void }) {
   const badge = KIND_BADGE[model.kind] || KIND_BADGE.model;
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSave?.();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1500);
+  };
+
   return (
     <div className="bg-white border border-gray-200/80 rounded-2xl p-5 hover:shadow-md hover:border-gray-300 transition-all relative overflow-hidden group flex flex-col justify-between">
       <div>
@@ -39,9 +52,22 @@ function FlagshipCard({ model }: { model: FlagshipModel }) {
           <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${badge.color}`}>
             {badge.label}
           </span>
-          <span className="text-[10px] font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full uppercase tracking-wider">
-            {model.category}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full uppercase tracking-wider">
+              {model.category}
+            </span>
+            <button
+              onClick={handleSave}
+              title="Save to Collection"
+              className={`p-1.5 rounded-full border transition-all ${
+                saved
+                  ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                  : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+              }`}
+            >
+              {saved ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+            </button>
+          </div>
         </div>
         <h3 className="text-xl font-bold text-[#0A0A0A] mb-1 group-hover:text-[#4F46E5] transition-colors">
           {model.familyName}
@@ -68,11 +94,12 @@ function FlagshipCard({ model }: { model: FlagshipModel }) {
   );
 }
 
-export const ModelsView: React.FC = () => {
+export const ModelsView: React.FC<ModelsViewProps> = ({ onAddToCollection }) => {
   const [flagshipModels, setFlagshipModels] = useState<FlagshipModel[]>([]);
   const [newModels, setNewModels] = useState<BroadModel[]>([]);
   const [establishedModels, setEstablishedModels] = useState<BroadModel[]>([]);
   const [loading, setLoading] = useState(true);
+  const [savedMap, setSavedMap] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchModels = async () => {
@@ -96,6 +123,14 @@ export const ModelsView: React.FC = () => {
     };
     fetchModels();
   }, []);
+
+  const handleSaveModel = (name: string, category: string, url: string) => {
+    onAddToCollection?.({ title: name, category, url });
+    setSavedMap(prev => ({ ...prev, [name]: true }));
+    setTimeout(() => {
+      setSavedMap(prev => ({ ...prev, [name]: false }));
+    }, 1500);
+  };
 
   return (
     <div className="flex-1 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
@@ -128,7 +163,13 @@ export const ModelsView: React.FC = () => {
                 <p className="text-sm text-gray-400 italic">No flagship models found.</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {flagshipModels.map(m => <FlagshipCard key={m.familyName} model={m} />)}
+                  {flagshipModels.map(m => (
+                    <FlagshipCard
+                      key={m.familyName}
+                      model={m}
+                      onSave={() => handleSaveModel(m.familyName, `Model (${m.developer})`, m.officialUrl)}
+                    />
+                  ))}
                 </div>
               )}
             </section>
@@ -145,25 +186,40 @@ export const ModelsView: React.FC = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {newModels.slice(0, 10).map(model => (
-                    <a
-                      href={model.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <div
                       key={model.id}
-                      className="bg-white border border-gray-200/80 rounded-2xl p-4 flex flex-col hover:shadow-md hover:border-gray-300 transition-all"
+                      className="bg-white border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between hover:shadow-md hover:border-gray-300 transition-all group"
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="text-sm font-bold text-[#0A0A0A] truncate max-w-[70%]">{model.name}</h4>
-                        <span className="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
-                          {model.pipelineTag}
-                        </span>
+                      <div>
+                        <div className="flex justify-between items-start mb-2">
+                          <a href={model.url} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-[#0A0A0A] hover:text-[#4F46E5] truncate max-w-[65%]">
+                            {model.name}
+                          </a>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
+                              {model.pipelineTag}
+                            </span>
+                            <button
+                              onClick={() => handleSaveModel(model.name, `HuggingFace (${model.author})`, model.url)}
+                              title="Save to Collection"
+                              className={`p-1.5 rounded-full border transition-all ${
+                                savedMap[model.name]
+                                  ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                                  : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+                              }`}
+                            >
+                              {savedMap[model.name] ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                            </button>
+                          </div>
+                        </div>
                       </div>
+
                       <div className="flex gap-4 mt-auto pt-3 border-t border-gray-100 text-gray-500">
                         <div className="flex items-center gap-1.5 text-xs"><Download className="w-3.5 h-3.5" />{model.downloads.toLocaleString()}</div>
                         <div className="flex items-center gap-1.5 text-xs"><ThumbsUp className="w-3.5 h-3.5" />{model.likes.toLocaleString()}</div>
                         <div className="flex items-center gap-1.5 text-xs ml-auto font-mono text-gray-400">{new Date(model.createdAt).toLocaleDateString()}</div>
                       </div>
-                    </a>
+                    </div>
                   ))}
                 </div>
               )}
@@ -181,20 +237,35 @@ export const ModelsView: React.FC = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {establishedModels.slice(0, 12).map(model => (
-                    <a
-                      href={model.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <div
                       key={model.id}
-                      className="bg-white border border-gray-200/80 rounded-2xl p-3.5 flex flex-col hover:shadow-md hover:border-gray-300 transition-all"
+                      className="bg-white border border-gray-200/80 rounded-2xl p-3.5 flex flex-col justify-between hover:shadow-md hover:border-gray-300 transition-all group"
                     >
-                      <h4 className="text-xs font-bold text-[#0A0A0A] truncate mb-1" title={model.name}>{model.name}</h4>
-                      <span className="text-[10px] text-gray-500 mb-3 truncate">by {model.author}</span>
+                      <div>
+                        <div className="flex justify-between items-start mb-1">
+                          <a href={model.url} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-[#0A0A0A] hover:text-[#4F46E5] truncate max-w-[80%]" title={model.name}>
+                            {model.name}
+                          </a>
+                          <button
+                            onClick={() => handleSaveModel(model.name, `HuggingFace (${model.author})`, model.url)}
+                            title="Save to Collection"
+                            className={`p-1 rounded-full border transition-all ${
+                              savedMap[model.name]
+                                ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                                : 'bg-gray-50 text-gray-400 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+                            }`}
+                          >
+                            {savedMap[model.name] ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+                          </button>
+                        </div>
+                        <span className="text-[10px] text-gray-500 mb-3 block truncate">by {model.author}</span>
+                      </div>
+
                       <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-100">
                         <span className="text-[10px] text-gray-500 font-semibold">{model.downloads.toLocaleString()} downloads</span>
                         <span className="text-[9px] font-semibold text-[#4F46E5] uppercase">{model.pipelineTag}</span>
                       </div>
-                    </a>
+                    </div>
                   ))}
                 </div>
               )}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { DirectoryItem, DirectoryCategory } from '../types';
-import { ExternalLink, Star, Zap } from 'lucide-react';
+import { ExternalLink, Star, Zap, Plus, Check } from 'lucide-react';
 
 interface DirectoryViewProps {
   items: DirectoryItem[];
   searchQuery: string;
+  onAddToCollection?: (item: { title: string; category: string; url?: string; key?: string; price?: number }) => void;
 }
 
 const CATEGORIES: Array<{ label: string; value: DirectoryCategory | 'All' }> = [
@@ -17,9 +18,10 @@ const CATEGORIES: Array<{ label: string; value: DirectoryCategory | 'All' }> = [
   { label: 'Frameworks', value: 'Frameworks & Infrastructure' },
 ];
 
-export const DirectoryView: React.FC<DirectoryViewProps> = ({ items, searchQuery }) => {
+export const DirectoryView: React.FC<DirectoryViewProps> = ({ items, searchQuery, onAddToCollection }) => {
   const [selectedCategory, setSelectedCategory] = useState<DirectoryCategory | 'All'>('All');
   const [typeFilter, setTypeFilter] = useState<'All' | 'Open Source' | 'Proprietary / API'>('All');
+  const [savedMap, setSavedMap] = useState<Record<string, boolean>>({});
 
   const filteredItems = items.filter(item => {
     const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
@@ -33,6 +35,18 @@ export const DirectoryView: React.FC<DirectoryViewProps> = ({ items, searchQuery
 
     return matchesCategory && matchesType && matchesSearch;
   });
+
+  const handleSaveItem = (item: DirectoryItem) => {
+    onAddToCollection?.({
+      title: item.name,
+      category: `${item.category} (${item.provider})`,
+      url: item.officialUrl,
+    });
+    setSavedMap(prev => ({ ...prev, [item.id]: true }));
+    setTimeout(() => {
+      setSavedMap(prev => ({ ...prev, [item.id]: false }));
+    }, 1500);
+  };
 
   return (
     <div className="flex-1 flex flex-col p-4 sm:p-8 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
@@ -118,9 +132,22 @@ export const DirectoryView: React.FC<DirectoryViewProps> = ({ items, searchQuery
               </div>
 
               {/* Name */}
-              <h3 className="text-lg font-bold text-[#0A0A0A] mb-1.5 group-hover:text-[#4F46E5] transition-colors">
-                {item.name}
-              </h3>
+              <div className="flex items-start justify-between gap-2 mb-1.5">
+                <h3 className="text-lg font-bold text-[#0A0A0A] group-hover:text-[#4F46E5] transition-colors">
+                  {item.name}
+                </h3>
+                <button
+                  onClick={() => handleSaveItem(item)}
+                  title="Save to Collection"
+                  className={`p-1.5 rounded-full border transition-all shrink-0 ${
+                    savedMap[item.id]
+                      ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                      : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-[#0A0A0A] hover:text-white'
+                  }`}
+                >
+                  {savedMap[item.id] ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                </button>
+              </div>
 
               {/* Description */}
               <p className="text-xs text-gray-600 mb-4 leading-relaxed line-clamp-3">

@@ -8,9 +8,10 @@ import { CategoryExploreRow } from './CategoryExploreRow';
 interface ExploreViewProps {
   searchQuery: string;
   onToolClick?: (toolId: string) => void;
+  onAddToCollection?: (item: { title: string; category: string; url?: string; key?: string; price?: number }) => void;
 }
 
-export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolClick }) => {
+export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolClick, onAddToCollection }) => {
   const [featuredCompany] = useState<AICompany>(AI_COMPANIES[0]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
@@ -22,10 +23,20 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
     return matchQ && matchCat;
   });
 
-  const toggleSave = (toolId: string) => {
+  const handleSaveTool = (tool: AITool) => {
     setSavedTools(prev => {
       const next = new Set(prev);
-      next.has(toolId) ? next.delete(toolId) : next.add(toolId);
+      if (next.has(tool.id)) {
+        next.delete(tool.id);
+      } else {
+        next.add(tool.id);
+        onAddToCollection?.({
+          title: tool.name,
+          category: tool.category,
+          price: tool.pricing === 'Free' ? 0 : 49,
+          url: `https://binbag.ai/tool/${tool.id}`,
+        });
+      }
       return next;
     });
   };
@@ -119,7 +130,7 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
                 key={tool.id}
                 tool={tool}
                 onClick={() => onToolClick?.(tool.id)}
-                onSave={() => toggleSave(tool.id)}
+                onSave={() => handleSaveTool(tool)}
                 saved={savedTools.has(tool.id)}
               />
             ))}
