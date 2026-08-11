@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MarketplaceAsset, CommunityPost, DirectoryItem, NewsItem, VaultPurchase } from './types';
 import { INITIAL_ASSETS, INITIAL_POSTS, INITIAL_DIRECTORY, INITIAL_NEWS } from './data/mockData';
-import { Navbar } from './components/Navbar';
-import { NewsTicker } from './components/NewsTicker';
+
+import { Sidebar } from './components/layout/Sidebar';
+import { TopBar } from './components/layout/TopBar';
+import { ExploreView } from './components/explore/ExploreView';
 import { MarketplaceView } from './components/MarketplaceView';
 import { ModelsView } from './components/ModelsView';
 import { WorkflowsView } from './components/WorkflowsView';
@@ -16,60 +18,40 @@ import { VaultModal } from './components/VaultModal';
 import { ListAssetModal } from './components/ListAssetModal';
 import { NewPostModal } from './components/NewPostModal';
 import { NewsArticleModal } from './components/NewsArticleModal';
-import { Footer } from './components/Footer';
 
 export default function App() {
-  // Navigation State
   const [searchQuery, setSearchQuery] = useState('');
 
-
-
-  // Local Storage Data Persistent State
   const [assets, setAssets] = useState<MarketplaceAsset[]>(() => {
     const saved = localStorage.getItem('nn_assets');
     return saved ? JSON.parse(saved) : INITIAL_ASSETS;
   });
 
   useEffect(() => {
-    // Fetch live listings
     fetch('/api/listings')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setAssets([...data, ...INITIAL_ASSETS]);
-        }
-      })
-      .catch(err => console.error('Error fetching live listings:', err));
-
-    // Fetch live news
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d) && d.length > 0) setAssets([...d, ...INITIAL_ASSETS]); })
+      .catch(() => {});
     fetch('/api/news')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setNews([...data, ...INITIAL_NEWS]);
-        }
-      })
-      .catch(err => console.error('Error fetching live news:', err));
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d) && d.length > 0) setNews([...d, ...INITIAL_NEWS]); })
+      .catch(() => {});
   }, []);
 
   const [posts, setPosts] = useState<CommunityPost[]>(() => {
     const saved = localStorage.getItem('nn_posts');
     return saved ? JSON.parse(saved) : INITIAL_POSTS;
   });
-
   const [directory] = useState<DirectoryItem[]>(INITIAL_DIRECTORY);
-
   const [news, setNews] = useState<NewsItem[]>(() => {
     const saved = localStorage.getItem('nn_news');
     return saved ? JSON.parse(saved) : INITIAL_NEWS;
   });
-
   const [vault, setVault] = useState<VaultPurchase[]>(() => {
     const saved = localStorage.getItem('nn_vault');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Modals state
   const [selectedAssetForDetail, setSelectedAssetForDetail] = useState<MarketplaceAsset | null>(null);
   const [selectedAssetForBuy, setSelectedAssetForBuy] = useState<MarketplaceAsset | null>(null);
   const [selectedNewsForModal, setSelectedNewsForModal] = useState<NewsItem | null>(null);
@@ -77,208 +59,119 @@ export default function App() {
   const [isListAssetOpen, setIsListAssetOpen] = useState(false);
   const [isNewPostOpen, setIsNewPostOpen] = useState(false);
 
-  // Sync to localStorage
-  useEffect(() => {
-    localStorage.setItem('nn_assets', JSON.stringify(assets));
-  }, [assets]);
+  useEffect(() => { localStorage.setItem('nn_assets', JSON.stringify(assets)); }, [assets]);
+  useEffect(() => { localStorage.setItem('nn_posts',  JSON.stringify(posts));  }, [posts]);
+  useEffect(() => { localStorage.setItem('nn_news',   JSON.stringify(news));   }, [news]);
+  useEffect(() => { localStorage.setItem('nn_vault',  JSON.stringify(vault));  }, [vault]);
 
-  useEffect(() => {
-    localStorage.setItem('nn_posts', JSON.stringify(posts));
-  }, [posts]);
+  const handleAddAsset = (a: MarketplaceAsset) => setAssets(p => [a, ...p]);
+  const handleAddPost  = (p: CommunityPost)    => setPosts(prev => [p, ...prev]);
+  const handleAddVault = (v: VaultPurchase)    => setVault(p => [v, ...p]);
 
-  useEffect(() => {
-    localStorage.setItem('nn_news', JSON.stringify(news));
-  }, [news]);
+  const handleUpvotePost = (id: string) =>
+    setPosts(prev => prev.map(p => p.id === id
+      ? { ...p, hasUpvoted: !p.hasUpvoted, upvotes: p.hasUpvoted ? p.upvotes - 1 : p.upvotes + 1 }
+      : p));
 
-  useEffect(() => {
-    localStorage.setItem('nn_vault', JSON.stringify(vault));
-  }, [vault]);
+  const handleAddReply = (postId: string, text: string) =>
+    setPosts(prev => prev.map(p => p.id === postId ? {
+      ...p,
+      replies: [...p.replies, {
+        id: `rep-${Date.now()}`,
+        author: { name: 'You', handle: 'you', avatar: '' },
+        content: text, createdAt: 'Just now', upvotes: 1,
+      }],
+      repliesCount: p.repliesCount + 1,
+    } : p));
 
-  // Handlers
-  const handleAddVaultPurchase = (purchase: VaultPurchase) => {
-    setVault(prev => [purchase, ...prev]);
-  };
-
-  const handleAddAsset = (newAsset: MarketplaceAsset) => {
-    setAssets(prev => [newAsset, ...prev]);
-  };
-
-  const handleAddPost = (newPost: CommunityPost) => {
-    setPosts(prev => [newPost, ...prev]);
-  };
-
-  const handleUpvotePost = (postId: string) => {
-    setPosts(prev => prev.map(p => {
-      if (p.id === postId) {
-        const hasUpvoted = p.hasUpvoted;
-        return {
-          ...p,
-          hasUpvoted: !hasUpvoted,
-          upvotes: hasUpvoted ? p.upvotes - 1 : p.upvotes + 1,
-        };
-      }
-      return p;
-    }));
-  };
-
-  const handleAddReply = (postId: string, replyText: string) => {
-    setPosts(prev => prev.map(p => {
-      if (p.id === postId) {
-        const newReply = {
-          id: `rep-${Date.now()}`,
-          author: {
-            name: 'CURRENT BUILDER',
-            handle: 'neural_builder',
-            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-          },
-          content: replyText,
-          createdAt: 'Just now',
-          upvotes: 1,
-        };
-        return {
-          ...p,
-          replies: [...p.replies, newReply],
-          repliesCount: p.repliesCount + 1,
-        };
-      }
-      return p;
-    }));
-  };
-
-  const handleToggleBookmarkNews = (newsId: string) => {
-    setNews(prev => prev.map(n => {
-      if (n.id === newsId) {
-        return { ...n, bookmarked: !n.bookmarked };
-      }
-      return n;
-    }));
-  };
+  const handleToggleBookmark = (id: string) =>
+    setNews(prev => prev.map(n => n.id === id ? { ...n, bookmarked: !n.bookmarked } : n));
 
   return (
     <BrowserRouter>
-      <div className="w-full h-full bg-[#0A0A0B] text-[#E2E2E2] flex flex-col overflow-hidden font-sans">
-        {/* Top Navbar */}
-        <Navbar
-          vaultCount={vault.length}
-        onOpenVault={() => setIsVaultOpen(true)}
-        onOpenListAsset={() => setIsListAssetOpen(true)}
-        onOpenNewPost={() => setIsNewPostOpen(true)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
+      <div className="min-h-screen bg-[#F0EFE9] flex font-sans">
+        <Sidebar vaultCount={vault.length} onOpenVault={() => setIsVaultOpen(true)} />
 
-      {/* Daily AI News Ticker Bar */}
-      <NewsTicker
-        news={news}
-        onSelectNews={(item) => setSelectedNewsForModal(item)}
-      />
-
-      {/* Main Container Views */}
-      <main className="flex-1 flex overflow-hidden relative">
-        <Routes>
-          <Route path="/" element={
-            <MarketplaceView
-              assets={assets}
-              onSelectAsset={(asset) => setSelectedAssetForDetail(asset)}
-              onQuickBuy={(asset) => setSelectedAssetForBuy(asset)}
+        <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
+          <div className="px-4 pt-3">
+            <TopBar
               searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              onToggleListAsset={() => setIsListAssetOpen(true)}
             />
-          } />
-          
-          <Route path="/marketplace/:id" element={
-            <div className="flex items-center justify-center w-full h-full text-[#888]">
-              {/* Future detailed view placeholder */}
-              Listing detail view (coming soon)
-            </div>
-          } />
+          </div>
 
-          <Route path="/models" element={<ModelsView />} />
+          <main className="flex-1 overflow-hidden flex">
+            <Routes>
+              <Route path="/"        element={<ExploreView searchQuery={searchQuery} />} />
+              <Route path="/explore" element={<ExploreView searchQuery={searchQuery} />} />
 
-          <Route path="/workflows" element={<WorkflowsView />} />
+              <Route path="/marketplace" element={
+                <MarketplaceView
+                  assets={assets}
+                  onSelectAsset={a => setSelectedAssetForDetail(a)}
+                  onQuickBuy={a => setSelectedAssetForBuy(a)}
+                  searchQuery={searchQuery}
+                />
+              } />
 
-          <Route path="/community" element={
-            <CommunityView
-              posts={posts}
-              onUpvotePost={handleUpvotePost}
-              onAddReply={handleAddReply}
-              onOpenNewPost={() => setIsNewPostOpen(true)}
-              searchQuery={searchQuery}
-            />
-          } />
+              <Route path="/models"    element={<div className="dark-view flex-1 overflow-hidden flex"><ModelsView /></div>} />
+              <Route path="/workflows" element={<div className="dark-view flex-1 overflow-hidden flex"><WorkflowsView /></div>} />
 
-          <Route path="/directory" element={
-            <DirectoryView
-              items={directory}
-              searchQuery={searchQuery}
-            />
-          } />
+              <Route path="/community" element={
+                <div className="dark-view flex-1 overflow-hidden flex">
+                  <CommunityView
+                    posts={posts}
+                    onUpvotePost={handleUpvotePost}
+                    onAddReply={handleAddReply}
+                    onOpenNewPost={() => setIsNewPostOpen(true)}
+                    searchQuery={searchQuery}
+                  />
+                </div>
+              } />
 
-          <Route path="/news" element={
-            <NewsView
-              news={news}
-              onToggleBookmark={handleToggleBookmarkNews}
-              onSelectNews={(item) => setSelectedNewsForModal(item)}
-              searchQuery={searchQuery}
-            />
-          } />
-          
-          {/* Catch-all Not Found Route */}
-          <Route path="*" element={
-            <div className="flex flex-col items-center justify-center w-full h-full text-center">
-              <h1 className="text-4xl font-bold text-white mb-2">404</h1>
-              <p className="text-[#888]">The page you're looking for doesn't exist.</p>
-            </div>
-          } />
-        </Routes>
-      </main>
+              <Route path="/directory" element={<DirectoryView items={directory} searchQuery={searchQuery} />} />
 
-      {/* Footer Status Bar */}
-      <Footer />
+              <Route path="/news" element={
+                <div className="dark-view flex-1 overflow-hidden flex">
+                  <NewsView
+                    news={news}
+                    onToggleBookmark={handleToggleBookmark}
+                    onSelectNews={item => setSelectedNewsForModal(item)}
+                    searchQuery={searchQuery}
+                  />
+                </div>
+              } />
 
-      {/* Interactive Modals */}
+              <Route path="*" element={
+                <div className="flex flex-col items-center justify-center flex-1 text-center">
+                  <h1 className="text-5xl font-black text-[#0A0A0A] mb-3">404</h1>
+                  <p className="text-gray-400 text-sm">This page doesn't exist yet.</p>
+                </div>
+              } />
+            </Routes>
+          </main>
+        </div>
+      </div>
+
       <AssetDetailModal
         asset={selectedAssetForDetail}
         onClose={() => setSelectedAssetForDetail(null)}
-        onBuy={(asset) => {
-          setSelectedAssetForDetail(null);
-          setSelectedAssetForBuy(asset);
-        }}
+        onBuy={a => { setSelectedAssetForDetail(null); setSelectedAssetForBuy(a); }}
       />
-
       <CheckoutModal
         asset={selectedAssetForBuy}
         onClose={() => setSelectedAssetForBuy(null)}
-        onCompletePurchase={handleAddVaultPurchase}
+        onCompletePurchase={handleAddVault}
       />
-
-      {isVaultOpen && (
-        <VaultModal
-          purchases={vault}
-          onClose={() => setIsVaultOpen(false)}
-        />
-      )}
-
-      {isListAssetOpen && (
-        <ListAssetModal
-          onClose={() => setIsListAssetOpen(false)}
-          onAddAsset={handleAddAsset}
-        />
-      )}
-
-      {isNewPostOpen && (
-        <NewPostModal
-          onClose={() => setIsNewPostOpen(false)}
-          onAddPost={handleAddPost}
-        />
-      )}
-
+      {isVaultOpen     && <VaultModal     purchases={vault} onClose={() => setIsVaultOpen(false)} />}
+      {isListAssetOpen && <ListAssetModal onClose={() => setIsListAssetOpen(false)} onAddAsset={handleAddAsset} />}
+      {isNewPostOpen   && <NewPostModal   onClose={() => setIsNewPostOpen(false)}   onAddPost={handleAddPost} />}
       <NewsArticleModal
         news={selectedNewsForModal}
         onClose={() => setSelectedNewsForModal(null)}
-        onToggleBookmark={handleToggleBookmarkNews}
+        onToggleBookmark={handleToggleBookmark}
       />
-
-      </div>
     </BrowserRouter>
   );
 }
