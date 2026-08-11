@@ -20,34 +20,42 @@ function RepoCard({ repo }: { repo: Repo }) {
       href={repo.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-[#0f0f11] border border-[#222] p-4 flex flex-col gap-3 hover:bg-[#151518] hover:border-[#3a3a3a] transition-all group"
+      className="bg-white border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:shadow-md hover:border-gray-300 transition-all group"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <GitBranch className="w-3.5 h-3.5 text-[#555] shrink-0" />
-          <span className="text-sm font-bold text-[#ccc] truncate group-hover:text-white transition-colors">
-            {repo.fullName}
-          </span>
+      <div>
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <GitBranch className="w-4 h-4 text-[#4F46E5] shrink-0" />
+            <span className="text-sm font-bold text-[#0A0A0A] truncate group-hover:text-[#4F46E5] transition-colors">
+              {repo.fullName}
+            </span>
+          </div>
+          <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#4F46E5] shrink-0 transition-colors" />
         </div>
-        <ArrowUpRight className="w-3.5 h-3.5 text-[#444] group-hover:text-[#00FF41] shrink-0 transition-colors" />
+        {repo.description && (
+          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">{repo.description}</p>
+        )}
       </div>
-      {repo.description && (
-        <p className="text-xs text-[#777] line-clamp-2 leading-relaxed">{repo.description}</p>
-      )}
-      <div className="flex items-center gap-3 mt-auto">
-        <div className="flex items-center gap-1 text-[11px] text-[#888]">
-          <Star className="w-3 h-3 text-[#FFB000]" />
-          {repo.stars.toLocaleString()}
+
+      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 text-xs font-semibold text-amber-600">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+            {repo.stars.toLocaleString()}
+          </div>
+          <div className="flex items-center gap-1 text-xs text-gray-400">
+            <Clock className="w-3 h-3" />
+            {new Date(repo.pushedAt || repo.createdAt).toLocaleDateString()}
+          </div>
         </div>
-        <div className="flex items-center gap-1 text-[11px] text-[#666]">
-          <Clock className="w-3 h-3" />
-          {new Date(repo.pushedAt || repo.createdAt).toLocaleDateString()}
+
+        <div className="flex gap-1">
+          {repo.topics.slice(0, 2).map(t => (
+            <span key={t} className="text-[9px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
+              {t}
+            </span>
+          ))}
         </div>
-        {repo.topics.slice(0, 2).map(t => (
-          <span key={t} className="text-[9px] font-mono text-[#444] bg-[#1a1a1e] px-1.5 py-0.5 border border-[#2a2a2a]">
-            {t}
-          </span>
-        ))}
       </div>
     </a>
   );
@@ -79,48 +87,50 @@ export const WorkflowsView: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <div className="flex-1 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
-        <div className="border-b border-[#262626] pb-6">
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2 tracking-tighter">
-            <GitBranch className="text-[#00FF41] w-6 h-6" />
-            AI Workflow Repositories
-          </h1>
-          <p className="text-sm text-[#888] mt-1">
-            Curated GitHub repos for AI agents, LLM orchestration, and agentic frameworks — auto-updated every 8 hours.
+        <div className="bg-white border border-gray-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-indigo-50 rounded-xl text-[#4F46E5]">
+              <GitBranch className="w-6 h-6" />
+            </div>
+            <h1 className="text-3xl font-black text-[#0A0A0A] tracking-tight">AI Workflow Repositories</h1>
+          </div>
+          <p className="text-sm text-gray-500 max-w-2xl">
+            Curated GitHub repos for AI agents, LLM orchestration, and agentic frameworks — automatically updated every 8 hours.
           </p>
         </div>
 
         {loading ? (
-          <div className="text-center text-[#555] py-20 animate-pulse">Loading AI workflow repos...</div>
+          <div className="text-center text-gray-400 py-20 font-medium animate-pulse">Loading AI workflow repos...</div>
         ) : (
           <>
-            <section className="space-y-5">
+            <section className="space-y-4">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#FFB000]" />
-                <h2 className="text-base font-bold text-white uppercase tracking-widest">New (Last 30 Days)</h2>
-                <span className="text-xs font-mono text-[#555] ml-auto">{newRepos.length} repos</span>
+                <Clock className="w-4 h-4 text-amber-500" />
+                <h2 className="text-base font-bold text-[#0A0A0A] uppercase tracking-wider">New (Last 30 Days)</h2>
+                <span className="text-xs font-semibold text-gray-400 ml-auto">{newRepos.length} repos</span>
               </div>
               {newRepos.length === 0 ? (
-                <p className="text-sm text-[#444] italic">No new repos yet — agent will populate on first run.</p>
+                <p className="text-sm text-gray-400 italic">No new repos yet — backend agent populates daily.</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {newRepos.slice(0, 12).map(r => <RepoCard key={r.id} repo={r} />)}
                 </div>
               )}
             </section>
 
-            <section className="space-y-5">
+            <section className="space-y-4">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-[#00E5FF]" />
-                <h2 className="text-base font-bold text-white uppercase tracking-widest">Most Starred</h2>
-                <span className="text-xs font-mono text-[#555] ml-auto">{starredRepos.length} repos</span>
+                <Activity className="w-4 h-4 text-indigo-500" />
+                <h2 className="text-base font-bold text-[#0A0A0A] uppercase tracking-wider">Most Starred Repos</h2>
+                <span className="text-xs font-semibold text-gray-400 ml-auto">{starredRepos.length} repos</span>
               </div>
               {starredRepos.length === 0 ? (
-                <p className="text-sm text-[#444] italic">No repos yet — agent will populate on first run.</p>
+                <p className="text-sm text-gray-400 italic">No repos yet — backend agent populates daily.</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {starredRepos.slice(0, 18).map(r => <RepoCard key={r.id} repo={r} />)}
                 </div>
               )}

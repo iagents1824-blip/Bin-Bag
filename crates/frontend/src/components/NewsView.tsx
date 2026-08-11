@@ -9,17 +9,14 @@ interface NewsViewProps {
   searchQuery: string;
 }
 
-// ── Adaptive image helpers ──────────────────────────────────────────────────
-
-// Gradient palette keyed by tag keyword — used when no real image exists
 const TAG_GRADIENTS: Record<string, string> = {
-  ai:             'from-violet-900 via-purple-800 to-indigo-900',
-  machinelearning:'from-blue-900 via-cyan-800 to-teal-900',
-  llm:            'from-emerald-900 via-green-800 to-teal-900',
-  openai:         'from-slate-800 via-gray-700 to-zinc-900',
-  python:         'from-yellow-900 via-amber-800 to-orange-900',
-  deeplearning:   'from-rose-900 via-red-800 to-pink-900',
-  default:        'from-[#0f0f1a] via-[#1a1a2e] to-[#16213e]',
+  ai:              'from-indigo-600 via-purple-600 to-indigo-800',
+  machinelearning: 'from-blue-600 via-cyan-600 to-teal-700',
+  llm:             'from-emerald-600 via-teal-600 to-emerald-800',
+  openai:          'from-slate-800 via-gray-800 to-zinc-900',
+  python:          'from-amber-600 via-orange-600 to-red-600',
+  deeplearning:    'from-rose-600 via-pink-600 to-purple-700',
+  default:         'from-indigo-700 via-purple-700 to-slate-800',
 };
 
 function getGradient(tag?: string): string {
@@ -35,7 +32,6 @@ function formatDate(ts?: string): string {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-// ── Adaptive image component ────────────────────────────────────────────────
 interface AdaptiveImageProps {
   src?: string | null;
   alt: string;
@@ -47,7 +43,6 @@ interface AdaptiveImageProps {
 const AdaptiveImage: React.FC<AdaptiveImageProps> = ({ src, alt, tag, className = '', overlay = false }) => {
   const [imgFailed, setImgFailed] = useState(false);
   const gradient = getGradient(tag);
-
   const showImage = src && !imgFailed;
 
   return (
@@ -62,17 +57,15 @@ const AdaptiveImage: React.FC<AdaptiveImageProps> = ({ src, alt, tag, className 
         />
       ) : (
         <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-          <Radio className="w-8 h-8 text-white/10" />
+          <Radio className="w-8 h-8 text-white/30" />
         </div>
       )}
       {overlay && (
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
       )}
     </div>
   );
 };
-
-// ── Sub-components ──────────────────────────────────────────────────────────
 
 interface FeaturedCardProps {
   item: NewsItem;
@@ -81,8 +74,10 @@ interface FeaturedCardProps {
 }
 
 const FeaturedCard: React.FC<FeaturedCardProps> = ({ item, onSelectNews, onToggleBookmark }) => (
-  <div className="relative rounded-xl overflow-hidden group cursor-pointer h-[420px] md:h-[480px]"
-    onClick={() => onSelectNews(item)}>
+  <div
+    className="relative rounded-3xl overflow-hidden group cursor-pointer h-[420px] md:h-[480px] shadow-sm border border-gray-200"
+    onClick={() => onSelectNews(item)}
+  >
     <AdaptiveImage
       src={item.coverImage}
       alt={item.title}
@@ -90,38 +85,29 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({ item, onSelectNews, onToggl
       className="absolute inset-0 w-full h-full"
       overlay
     />
-    {/* Featured badge */}
     <div className="absolute top-4 left-4 z-10">
-      <span className="bg-white text-black text-[11px] font-bold px-3 py-1 rounded-full tracking-wide">
-        Featured Post
+      <span className="bg-[#0A0A0A] text-white text-[11px] font-bold px-3 py-1 rounded-full tracking-wide">
+        Featured Article
       </span>
     </div>
-    {/* Bookmark */}
     <button
       onClick={e => { e.stopPropagation(); onToggleBookmark(item.id); }}
-      className="absolute top-4 right-4 z-10 bg-black/40 hover:bg-black/70 p-2 rounded-full transition-colors"
+      className="absolute top-4 right-4 z-10 bg-white/80 hover:bg-white p-2 rounded-full transition-colors text-[#0A0A0A] shadow-sm"
     >
       {item.bookmarked
-        ? <BookmarkCheck className="w-4 h-4 text-[#00FF41]" />
-        : <Bookmark className="w-4 h-4 text-white" />}
+        ? <BookmarkCheck className="w-4 h-4 text-[#4F46E5]" />
+        : <Bookmark className="w-4 h-4 text-gray-700" />}
     </button>
-    {/* Content overlay */}
-    <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+    <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-10">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] font-mono text-[#00FF41] uppercase tracking-widest">{item.category}</span>
-        <span className="text-[#888] text-[10px]">·</span>
-        <span className="text-[10px] text-[#aaa]">{formatDate(item.timestamp)}</span>
-        {(item as any).readingTime && (
-          <>
-            <span className="text-[#888] text-[10px]">·</span>
-            <span className="text-[10px] text-[#aaa]">{(item as any).readingTime} min read</span>
-          </>
-        )}
+        <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">{item.category}</span>
+        <span className="text-white/60 text-xs">·</span>
+        <span className="text-xs text-white/80 font-medium">{formatDate(item.timestamp)}</span>
       </div>
-      <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-2 drop-shadow">
+      <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 drop-shadow-sm">
         {item.title}
       </h2>
-      <p className="text-sm text-white/70 line-clamp-2 leading-relaxed">{item.summary}</p>
+      <p className="text-sm text-white/80 line-clamp-2 leading-relaxed">{item.summary}</p>
     </div>
   </div>
 );
@@ -133,10 +119,10 @@ interface SideCardProps {
 
 const SideCard: React.FC<SideCardProps> = ({ item, onSelectNews }) => (
   <div
-    className="flex gap-3 items-start group cursor-pointer hover:bg-white/5 p-2 -mx-2 rounded-lg transition-colors"
+    className="flex gap-3 items-start group cursor-pointer hover:bg-white p-2.5 rounded-2xl transition-all border border-transparent hover:border-gray-200/80 hover:shadow-sm"
     onClick={() => onSelectNews(item)}
   >
-    <div className="shrink-0 w-20 h-16 rounded-lg overflow-hidden">
+    <div className="shrink-0 w-20 h-16 rounded-xl overflow-hidden border border-gray-200">
       <AdaptiveImage
         src={item.coverImage}
         alt={item.title}
@@ -146,12 +132,9 @@ const SideCard: React.FC<SideCardProps> = ({ item, onSelectNews }) => (
     </div>
     <div className="flex-1 min-w-0">
       <div className="flex items-center gap-1.5 mb-1">
-        <span className="text-[9px] font-mono text-[#888] uppercase">{formatDate(item.timestamp)}</span>
-        {(item as any).readingTime && (
-          <span className="text-[9px] text-[#666]">· {(item as any).readingTime} min</span>
-        )}
+        <span className="text-[10px] font-semibold text-gray-400 uppercase">{formatDate(item.timestamp)}</span>
       </div>
-      <h4 className="text-sm font-semibold text-[#ddd] leading-snug line-clamp-2 group-hover:text-white transition-colors">
+      <h4 className="text-sm font-bold text-[#0A0A0A] leading-snug line-clamp-2 group-hover:text-[#4F46E5] transition-colors">
         {item.title}
       </h4>
     </div>
@@ -166,43 +149,45 @@ interface WeeklyCardProps {
 
 const WeeklyCard: React.FC<WeeklyCardProps> = ({ item, onSelectNews, onToggleBookmark }) => (
   <div
-    className="group rounded-xl overflow-hidden border border-[#1e1e1e] bg-[#0f0f11] hover:border-[#333] transition-all cursor-pointer"
+    className="group rounded-2xl overflow-hidden border border-gray-200/80 bg-white hover:shadow-md hover:border-gray-300 transition-all cursor-pointer flex flex-col justify-between"
     onClick={() => onSelectNews(item)}
   >
-    <div className="relative h-44 overflow-hidden">
-      <AdaptiveImage
-        src={item.coverImage}
-        alt={item.title}
-        tag={(item as any).tag}
-        className="w-full h-full"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-      <button
-        onClick={e => { e.stopPropagation(); onToggleBookmark(item.id); }}
-        className="absolute top-3 right-3 bg-black/50 hover:bg-black/80 p-1.5 rounded-full transition-colors"
-      >
-        {item.bookmarked
-          ? <BookmarkCheck className="w-3.5 h-3.5 text-[#00FF41]" />
-          : <Bookmark className="w-3.5 h-3.5 text-white/70" />}
-      </button>
-    </div>
-    <div className="p-4">
-      <div className="flex items-center gap-2 mb-2 text-[10px] text-[#666] font-mono uppercase">
-        <span>{formatDate(item.timestamp)}</span>
-        {(item as any).readingTime && <span>· {(item as any).readingTime} min read</span>}
+    <div>
+      <div className="relative h-44 overflow-hidden">
+        <AdaptiveImage
+          src={item.coverImage}
+          alt={item.title}
+          tag={(item as any).tag}
+          className="w-full h-full"
+        />
+        <button
+          onClick={e => { e.stopPropagation(); onToggleBookmark(item.id); }}
+          className="absolute top-3 right-3 bg-white/90 hover:bg-white p-1.5 rounded-full transition-colors text-gray-700 shadow-sm"
+        >
+          {item.bookmarked
+            ? <BookmarkCheck className="w-4 h-4 text-[#4F46E5]" />
+            : <Bookmark className="w-4 h-4 text-gray-700" />}
+        </button>
       </div>
-      <h3 className="text-sm font-bold text-[#ddd] leading-snug line-clamp-2 group-hover:text-white transition-colors mb-2">
-        {item.title}
-      </h3>
-      <p className="text-xs text-[#666] line-clamp-2 leading-relaxed">{item.summary}</p>
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#1e1e1e]">
-        <span className="text-[10px] text-[#555] font-mono">{item.source}</span>
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-2 text-[10px] text-gray-400 font-semibold uppercase">
+          <span>{formatDate(item.timestamp)}</span>
+        </div>
+        <h3 className="text-sm font-bold text-[#0A0A0A] leading-snug line-clamp-2 group-hover:text-[#4F46E5] transition-colors mb-2">
+          {item.title}
+        </h3>
+        <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">{item.summary}</p>
+      </div>
+    </div>
+    <div className="p-4 pt-0">
+      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+        <span className="text-[10px] text-gray-500 font-semibold">{item.source}</span>
         <a
           href={item.url}
           target="_blank"
           rel="noopener noreferrer"
           onClick={e => e.stopPropagation()}
-          className="text-[10px] text-[#888] hover:text-[#00FF41] transition-colors flex items-center gap-1"
+          className="text-xs font-bold text-[#4F46E5] hover:text-indigo-700 transition-colors flex items-center gap-1"
         >
           <ExternalLink className="w-3 h-3" /> Read
         </a>
@@ -210,8 +195,6 @@ const WeeklyCard: React.FC<WeeklyCardProps> = ({ item, onSelectNews, onToggleBoo
     </div>
   </div>
 );
-
-// ── Main View ───────────────────────────────────────────────────────────────
 
 const TAGS = ['All', 'AI', 'Machine Learning', 'LLM', 'Open Source'];
 
@@ -240,56 +223,40 @@ export const NewsView: React.FC<NewsViewProps> = ({
   const weeklyItems = rest.slice(4, 16);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#080809]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="flex-1 overflow-y-auto bg-[#F0EFE9] text-[#0A0A0A]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
         {/* Page header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="bg-white border border-gray-200/80 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Radio className="w-3.5 h-3.5 text-[#00FF41] animate-pulse" />
-              <span className="text-[10px] font-mono text-[#00FF41] uppercase tracking-widest">Live AI News</span>
+              <Radio className="w-4 h-4 text-[#4F46E5] animate-pulse" />
+              <span className="text-xs font-bold text-[#4F46E5] uppercase tracking-wider">LIVE AI INTELLIGENCE</span>
             </div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Daily Intelligence</h1>
+            <h1 className="text-3xl font-black text-[#0A0A0A] tracking-tight">Daily News & Insights</h1>
           </div>
-          {/* Tag filter pills */}
-          <div className="hidden md:flex items-center gap-2">
+
+          <div className="flex items-center gap-2">
             {TAGS.map(t => (
               <button
                 key={t}
                 onClick={() => setActiveTag(t)}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                   activeTag === t
-                    ? 'bg-white text-black'
-                    : 'bg-[#121214] text-[#888] border border-[#262626] hover:text-white'
+                    ? 'bg-[#0A0A0A] text-white border-[#0A0A0A]'
+                    : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200 hover:text-gray-900'
                 }`}
               >{t}</button>
             ))}
           </div>
         </div>
 
-        {/* Mobile tag filter */}
-        <div className="flex md:hidden gap-2 mb-6 overflow-x-auto pb-2">
-          {TAGS.map(t => (
-            <button
-              key={t}
-              onClick={() => setActiveTag(t)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all ${
-                activeTag === t
-                  ? 'bg-white text-black'
-                  : 'bg-[#121214] text-[#888] border border-[#262626]'
-              }`}
-            >{t}</button>
-          ))}
-        </div>
-
         {filtered.length === 0 ? (
-          <div className="text-center text-[#555] py-24">No news articles found.</div>
+          <div className="text-center text-gray-400 py-24 font-medium">No news articles found.</div>
         ) : (
           <>
             {/* Hero row: Featured + sidebar */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-12">
-              {/* Featured large card */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
               <div className="lg:col-span-3">
                 {featured && (
                   <FeaturedCard
@@ -300,23 +267,20 @@ export const NewsView: React.FC<NewsViewProps> = ({
                 )}
               </div>
 
-              {/* Side list */}
-              <div className="lg:col-span-2 flex flex-col gap-1 divide-y divide-[#1a1a1a]">
+              <div className="lg:col-span-2 flex flex-col gap-2 bg-white/60 border border-gray-200/80 p-3 rounded-3xl">
                 {sideItems.map(item => (
-                  <div key={item.id} className="py-3 first:pt-0">
-                    <SideCard item={item} onSelectNews={onSelectNews} />
-                  </div>
+                  <SideCard key={item.id} item={item} onSelectNews={onSelectNews} />
                 ))}
               </div>
             </div>
 
             {/* Weekly Top News section */}
             {weeklyItems.length > 0 && (
-              <section>
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-white mb-2">Weekly Top News</h2>
-                  <p className="text-sm text-[#666] max-w-md mx-auto">
-                    Stay updated with the latest AI trends, model releases, and research from the community.
+              <section className="pt-4">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-black text-[#0A0A0A]">Weekly Top News</h2>
+                  <p className="text-sm text-gray-500">
+                    Stay updated with the latest AI trends, model releases, and breakthroughs.
                   </p>
                 </div>
 
@@ -330,14 +294,6 @@ export const NewsView: React.FC<NewsViewProps> = ({
                     />
                   ))}
                 </div>
-
-                {rest.length > 16 && (
-                  <div className="text-center mt-8">
-                    <span className="text-xs font-mono text-[#555]">
-                      Showing {Math.min(filtered.length, 17)} of {filtered.length} articles
-                    </span>
-                  </div>
-                )}
               </section>
             )}
           </>

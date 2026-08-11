@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MarketplaceAsset, AssetCategory } from '../types';
-import { X, PlusCircle, Upload, ShieldCheck } from 'lucide-react';
+import { X, Upload } from 'lucide-react';
 
 interface ListAssetModalProps {
   onClose: () => void;
@@ -12,48 +12,44 @@ export const ListAssetModal: React.FC<ListAssetModalProps> = ({ onClose, onAddAs
   const [tagline, setTagline] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<AssetCategory>('Agentic Workflow');
-  const [price, setPrice] = useState<number>(49);
-  const [framework, setFramework] = useState('LangGraph / Python');
-  const [parameters, setParameters] = useState('7 Billion');
-  const [format, setFormat] = useState('GGUF / Safetensors');
+  const [price, setPrice] = useState('0');
+  const [framework, setFramework] = useState('LangChain');
+  const [format, setFormat] = useState('JSON / Python');
   const [systemPrompt, setSystemPrompt] = useState('');
-  const [tagsInput, setTagsInput] = useState('Agent, LangChain, Python');
-  const [creatorHandle, setCreatorHandle] = useState('ai_builder');
+  const [tags, setTags] = useState('AI, Agent, Automation');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !tagline.trim()) return;
+    if (!title.trim()) return;
 
     const newAsset: MarketplaceAsset = {
       id: `asset-${Date.now()}`,
       title,
-      tagline,
-      description: description || tagline,
+      tagline: tagline || title,
+      description,
       category,
-      price: Number(price),
+      price: parseFloat(price) || 0,
       creator: {
-        name: creatorHandle.replace('_', ' ').toUpperCase(),
-        handle: creatorHandle,
+        name: 'You',
+        handle: 'you',
         verified: true,
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
       },
       stats: {
         downloads: 1,
         rating: 5.0,
         reviewCount: 1,
-        efficiencyScore: '100% Latency Optimized',
+        efficiencyScore: '98.5%',
       },
-      tags: tagsInput.split(',').map(t => t.trim()).filter(Boolean),
+      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
       specs: {
         framework,
-        parameters,
         format,
-        contextWindow: '128k Tokens',
       },
       systemPromptPreview: systemPrompt,
-      downloadUrl: 'https://github.com/binbag/releases/latest.zip',
+      downloadUrl: '#',
       createdAt: new Date().toISOString().split('T')[0],
-      featured: true,
+      featured: false,
     };
 
     onAddAsset(newAsset);
@@ -61,44 +57,40 @@ export const ListAssetModal: React.FC<ListAssetModalProps> = ({ onClose, onAddAs
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      <div className="bg-[#0D0D0E] border border-[#262626] w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="bg-white border border-gray-200 w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl flex flex-col text-[#0A0A0A] max-h-[90vh]">
         
-        {/* Header */}
-        <div className="p-5 border-b border-[#262626] flex items-center justify-between bg-[#0A0A0B]">
-          <div className="flex items-center gap-2">
-            <PlusCircle className="w-4 h-4 text-[#00FF41]" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-              LIST AI ASSET ON MARKETPLACE
+        <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#4F46E5] block mb-1">
+              CREATOR PUBLISHING
             </span>
+            <h2 className="text-xl font-black text-[#0A0A0A]">List New AI Asset</h2>
           </div>
-          <button onClick={onClose} className="p-1 text-[#888888] hover:text-white">
+          <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 rounded-full hover:bg-gray-100 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 text-xs font-mono flex-1">
-          
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 flex-1">
           <div>
-            <label className="text-[10px] text-[#888888] uppercase block mb-1">Asset Name / Title *</label>
+            <label className="text-xs font-bold text-gray-700 block mb-1">Asset Title *</label>
             <input
-              type="text"
               required
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Quant-Fin V5 Arbitrage Agent"
-              className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+              onChange={e => setTitle(e.target.value)}
+              placeholder="e.g. Multi-agent Arbitrage Engine"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] text-[#888888] uppercase block mb-1">Category</label>
+              <label className="text-xs font-bold text-gray-700 block mb-1">Category</label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value as AssetCategory)}
-                className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+                onChange={e => setCategory(e.target.value as any)}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
               >
                 <option value="Agentic Workflow">Agentic Workflow</option>
                 <option value="LLM Fine-tune">LLM Fine-tune</option>
@@ -110,101 +102,95 @@ export const ListAssetModal: React.FC<ListAssetModalProps> = ({ onClose, onAddAs
             </div>
 
             <div>
-              <label className="text-[10px] text-[#888888] uppercase block mb-1">Price ($ USD, 0 for Free)</label>
+              <label className="text-xs font-bold text-gray-700 block mb-1">Price ($USD, 0 = Free)</label>
               <input
                 type="number"
-                min="0"
                 value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+                onChange={e => setPrice(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] text-[#888888] uppercase block mb-1">Short Tagline *</label>
+            <label className="text-xs font-bold text-gray-700 block mb-1">Tagline</label>
             <input
-              type="text"
-              required
               value={tagline}
-              onChange={(e) => setTagline(e.target.value)}
-              placeholder="e.g. Real-time market sentiment and multi-chain execution agent"
-              className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+              onChange={e => setTagline(e.target.value)}
+              placeholder="Short 1-line summary"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
             />
           </div>
 
           <div>
-            <label className="text-[10px] text-[#888888] uppercase block mb-1">Detailed Description</label>
+            <label className="text-xs font-bold text-gray-700 block mb-1">Full Description</label>
             <textarea
               rows={3}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Explain architecture, training dataset, or usage instructions..."
-              className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+              onChange={e => setDescription(e.target.value)}
+              placeholder="Explain how this asset works and how to use it..."
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[9px] text-[#888888] uppercase block mb-1">Framework</label>
+              <label className="text-xs font-bold text-gray-700 block mb-1">Framework</label>
               <input
-                type="text"
                 value={framework}
-                onChange={(e) => setFramework(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2 focus:outline-none focus:border-[#555]"
+                onChange={e => setFramework(e.target.value)}
+                placeholder="e.g. n8n / LangChain"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
               />
             </div>
             <div>
-              <label className="text-[9px] text-[#888888] uppercase block mb-1">Parameters</label>
+              <label className="text-xs font-bold text-gray-700 block mb-1">Format</label>
               <input
-                type="text"
-                value={parameters}
-                onChange={(e) => setParameters(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2 focus:outline-none focus:border-[#555]"
-              />
-            </div>
-            <div>
-              <label className="text-[9px] text-[#888888] uppercase block mb-1">Format</label>
-              <input
-                type="text"
                 value={format}
-                onChange={(e) => setFormat(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2 focus:outline-none focus:border-[#555]"
+                onChange={e => setFormat(e.target.value)}
+                placeholder="e.g. JSON / GGUF"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] text-[#888888] uppercase block mb-1">System Instructions / Prompt Preview</label>
+            <label className="text-xs font-bold text-gray-700 block mb-1">System Prompt / Logic Preview</label>
             <textarea
               rows={2}
               value={systemPrompt}
-              onChange={(e) => setSystemPrompt(e.target.value)}
-              placeholder="System prompt preview..."
-              className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+              onChange={e => setSystemPrompt(e.target.value)}
+              placeholder="Paste system instructions or preview code..."
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-mono text-gray-900 focus:outline-none focus:border-[#4F46E5]"
             />
           </div>
 
           <div>
-            <label className="text-[10px] text-[#888888] uppercase block mb-1">Tags (Comma Separated)</label>
+            <label className="text-xs font-bold text-gray-700 block mb-1">Tags (comma separated)</label>
             <input
-              type="text"
-              value={tagsInput}
-              onChange={(e) => setTagsInput(e.target.value)}
-              className="w-full bg-[#0A0A0B] border border-[#262626] text-white p-2.5 focus:outline-none focus:border-[#555]"
+              value={tags}
+              onChange={e => setTags(e.target.value)}
+              placeholder="Trading, LangChain, n8n"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-900 focus:outline-none focus:border-[#4F46E5]"
             />
           </div>
 
-          {/* Submit */}
-          <div className="pt-4 border-t border-[#262626]">
+          <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors"
+            >
+              Cancel
+            </button>
             <button
               type="submit"
-              className="w-full bg-white hover:bg-neutral-200 text-black font-sans font-bold text-xs py-3 uppercase tracking-wider transition-colors"
+              className="bg-[#0A0A0A] hover:bg-black text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-sm"
             >
-              Publish Asset To Marketplace
+              <Upload className="w-4 h-4" />
+              <span>Publish Listing</span>
             </button>
           </div>
-
         </form>
 
       </div>

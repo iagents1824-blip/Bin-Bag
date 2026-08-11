@@ -115,11 +115,11 @@ export default function App() {
                 />
               } />
 
-              <Route path="/models"    element={<div className="dark-view flex-1 overflow-hidden flex"><ModelsView /></div>} />
-              <Route path="/workflows" element={<div className="dark-view flex-1 overflow-hidden flex"><WorkflowsView /></div>} />
+              <Route path="/models"    element={<div className="flex-1 overflow-hidden flex"><ModelsView /></div>} />
+              <Route path="/workflows" element={<div className="flex-1 overflow-hidden flex"><WorkflowsView /></div>} />
 
               <Route path="/community" element={
-                <div className="dark-view flex-1 overflow-hidden flex">
+                <div className="flex-1 overflow-hidden flex">
                   <CommunityView
                     posts={posts}
                     onUpvotePost={handleUpvotePost}
@@ -133,7 +133,7 @@ export default function App() {
               <Route path="/directory" element={<DirectoryView items={directory} searchQuery={searchQuery} />} />
 
               <Route path="/news" element={
-                <div className="dark-view flex-1 overflow-hidden flex">
+                <div className="flex-1 overflow-hidden flex">
                   <NewsView
                     news={news}
                     onToggleBookmark={handleToggleBookmark}
