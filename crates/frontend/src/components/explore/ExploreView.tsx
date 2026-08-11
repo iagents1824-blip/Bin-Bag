@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TrendingUp, Zap, Crown, ChevronDown } from 'lucide-react';
+import { TrendingUp, Zap, Crown, ChevronDown, ArrowLeft, Building2 } from 'lucide-react';
 import { AI_COMPANIES, ALL_TOOLS, CATEGORIES, AICompany, AITool } from '../../data/mockAIData';
 import { ToolProfileHero } from './ToolProfileHero';
 import { ListingCard } from '../cards/ListingCard';
 import { CategoryExploreRow } from './CategoryExploreRow';
+import { CompanyCard } from '../cards/CompanyCard';
 
 interface ExploreViewProps {
   searchQuery: string;
@@ -12,10 +13,11 @@ interface ExploreViewProps {
 }
 
 export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolClick, onAddToCollection }) => {
-  const [featuredCompany] = useState<AICompany>(AI_COMPANIES[0]);
+  const [featuredCompany, setFeaturedCompany] = useState<AICompany>(AI_COMPANIES[0]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
   const [displayLimit, setDisplayLimit] = useState(32);
+  const [showCompaniesGrid, setShowCompaniesGrid] = useState(false);
 
   const filtered = ALL_TOOLS.filter(t => {
     const q = searchQuery.toLowerCase();
@@ -44,6 +46,43 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
     });
   };
 
+  if (showCompaniesGrid && !searchQuery) {
+    return (
+      <div className="flex-1 overflow-y-auto px-4 pb-12 pt-6">
+        <div className="flex items-center gap-4 mb-6">
+          <button
+            onClick={() => setShowCompaniesGrid(false)}
+            className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-sm"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h1 className="text-2xl font-black text-[#0A0A0A] flex items-center gap-2">
+              <Building2 className="w-6 h-6 text-indigo-600" /> All AI Companies
+            </h1>
+            <p className="text-sm text-gray-500">Explore our directory of verified AI companies and developers.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {AI_COMPANIES.map(company => (
+            <div key={company.id} className="w-full">
+              <CompanyCard
+                company={company}
+                onClick={() => {
+                  setFeaturedCompany(company);
+                  setShowCompaniesGrid(false);
+                  setActiveCategory('all');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 overflow-y-auto px-4 pb-12 pt-2">
 
@@ -52,7 +91,7 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
-            onClick={() => { setActiveCategory(cat.id); setDisplayLimit(32); }}
+            onClick={() => { setActiveCategory(cat.id); setDisplayLimit(32); setShowCompaniesGrid(false); }}
             className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
               activeCategory === cat.id
                 ? 'bg-[#0A0A0A] text-white shadow-md'
@@ -73,9 +112,13 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
       {/* Explore categories row */}
       {activeCategory === 'all' && !searchQuery && (
         <CategoryExploreRow
-          title="Explore categories"
-          companies={AI_COMPANIES}
-          onCompanyClick={c => console.log('company', c.id)}
+          title="Explore AI Companies"
+          companies={AI_COMPANIES.slice(0, 6)}
+          onCompanyClick={c => {
+            setFeaturedCompany(c);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onSeeAll={() => setShowCompaniesGrid(true)}
         />
       )}
 

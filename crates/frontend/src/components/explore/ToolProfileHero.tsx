@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Star, Users, Bell, CheckCircle, ExternalLink, ShieldAlert } from 'lucide-react';
-import { AICompany, formatFollowers } from '../../data/mockAIData';
+import { Star, Users, Bell, CheckCircle, ExternalLink, ShieldAlert, ChevronDown } from 'lucide-react';
+import { AICompany, formatFollowers, ALL_TOOLS } from '../../data/mockAIData';
 import { ListingCard } from '../cards/ListingCard';
 
 const TABS = ['Overview', 'Features', 'Pricing', 'Reviews', 'Alternatives'];
@@ -15,12 +15,16 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
   const [following, setFollowing] = useState(false);
   const [bannerError, setBannerError] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(16);
 
   const officialUrl = company.tools[0]?.url || `https://binbag.ai/go/${company.id}`;
 
   const handleVisitOfficialSite = () => {
     window.open(`/go/${company.id}`, '_blank', 'noopener,noreferrer');
   };
+
+  const companyTools = ALL_TOOLS.filter(t => t.company === company.name);
+  const visibleTools = companyTools.slice(0, displayLimit);
 
   return (
     <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 mb-6">
@@ -87,7 +91,7 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
               <Users className="w-3 h-3" /> <strong className="text-gray-700">{formatFollowers(company.followers)}</strong> followers
             </span>
             <span className="text-xs text-gray-500">
-              <strong className="text-gray-700">{company.toolCount}</strong> tools indexed
+              <strong className="text-gray-700">{companyTools.length}</strong> tools indexed
             </span>
             <span className="flex items-center gap-1 text-xs text-gray-500">
               <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
@@ -103,7 +107,7 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
           {TABS.map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => { setActiveTab(tab); setDisplayLimit(16); }}
               className={`px-4 py-3 text-sm font-semibold whitespace-nowrap transition-all border-b-2 ${
                 activeTab === tab
                   ? 'border-[#0A0A0A] text-[#0A0A0A]'
@@ -130,15 +134,32 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
       {/* Tool grid / tab content */}
       <div className="p-6">
         {activeTab === 'Overview' ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {company.tools.map(tool => (
-              <ListingCard
-                key={tool.id}
-                tool={tool}
-                onClick={() => onToolClick?.(tool.id)}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 sm:gap-4">
+              {visibleTools.map(tool => (
+                <ListingCard
+                  key={tool.id}
+                  tool={tool}
+                  onClick={() => onToolClick?.(tool.id)}
+                />
+              ))}
+            </div>
+            
+            {visibleTools.length < companyTools.length && (
+              <div className="mt-8 text-center flex flex-col items-center">
+                <p className="text-xs text-gray-400 mb-3 font-semibold">
+                  Showing {visibleTools.length} of {companyTools.length} {company.name} tools
+                </p>
+                <button
+                  onClick={() => setDisplayLimit(prev => prev + 16)}
+                  className="bg-white border border-gray-200 hover:bg-gray-50 text-[#0A0A0A] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm flex items-center gap-2"
+                >
+                  <span>Load More</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="py-12 text-center text-gray-400 text-sm">
             {activeTab} breakdown for {company.name} coming soon.
