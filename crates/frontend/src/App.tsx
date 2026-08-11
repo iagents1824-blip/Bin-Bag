@@ -12,6 +12,7 @@ import { WorkflowsView } from './components/WorkflowsView';
 import { CommunityView } from './components/CommunityView';
 import { DirectoryView } from './components/DirectoryView';
 import { NewsView } from './components/NewsView';
+import { OutboundRedirect } from './components/OutboundRedirect';
 import { AssetDetailModal } from './components/AssetDetailModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { VaultModal } from './components/VaultModal';
@@ -173,6 +174,8 @@ export default function App() {
                   />
                 </div>
               } />
+
+              <Route path="/go/:id" element={<OutboundRedirect />} />
 
               <Route path="*" element={
                 <div className="flex flex-col items-center justify-center flex-1 text-center">

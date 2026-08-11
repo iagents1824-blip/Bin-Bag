@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, Users } from 'lucide-react';
+import { Star, Users, ExternalLink } from 'lucide-react';
 import { AICompany, formatFollowers } from '../../data/mockAIData';
 
 interface CompanyCardProps {
@@ -11,10 +11,16 @@ interface CompanyCardProps {
 export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick, compact }) => {
   const [logoError, setLogoError] = useState(false);
 
+  const handleExternalClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const targetUrl = company.tools[0]?.url || `https://binbag.ai/go/${company.id}`;
+    window.open(`/go/${company.id}`, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div
-      className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer flex items-center gap-3 p-4 shrink-0"
-      style={compact ? { width: 260 } : {}}
+      className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer flex items-center gap-3 p-4 shrink-0 group relative"
+      style={compact ? { width: 270 } : {}}
       onClick={onClick}
     >
       {/* Logo */}
@@ -37,7 +43,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick, comp
             {company.categoryBadge}
           </span>
         </div>
-        <div className="flex items-center gap-3 mt-1">
+        <div className="flex items-center gap-2 mt-1">
           <span className="flex items-center gap-0.5 text-[10px] text-gray-500">
             <Users className="w-2.5 h-2.5" /> {formatFollowers(company.followers)}
           </span>
@@ -45,9 +51,17 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onClick, comp
           <span className="flex items-center gap-0.5 text-[10px] text-gray-500">
             <Star className="w-2.5 h-2.5 text-amber-400 fill-amber-400" /> {company.rating}
           </span>
-          <span className="text-[10px] text-gray-400">·{company.joinedYearsAgo}y</span>
         </div>
       </div>
+
+      {/* Direct Outbound Link Icon */}
+      <button
+        onClick={handleExternalClick}
+        title={`Visit ${company.name} Official Website`}
+        className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors shrink-0"
+      >
+        <ExternalLink className="w-4 h-4" />
+      </button>
     </div>
   );
 };
