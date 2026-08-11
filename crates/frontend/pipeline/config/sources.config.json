@@ -14,10 +14,10 @@
       { "name": "OpenAI",      "url": "https://openai.com/news/rss.xml" },
       { "name": "Google AI",   "url": "https://blog.google/technology/ai/rss/" },
       { "name": "HuggingFace", "url": "https://huggingface.co/blog/feed.xml" },
-      { "name": "Anthropic",   "url": "https://www.anthropic.com/news/rss" },
+      { "name": "Anthropic",   "url": "https://anthropic.substack.com/feed" },
       { "name": "Mistral",     "url": "https://mistral.ai/news/rss" },
-      { "name": "ElevenLabs",  "url": "https://elevenlabs.io/blog/rss" },
-      { "name": "Stability",   "url": "https://stability.ai/news/rss.xml" }
+      { "name": "ElevenLabs",  "url": "https://elevenlabs.io/feed.xml" },
+      { "name": "Meta AI",     "url": "https://ai.meta.com/blog/feed/" }
     ]
   },
   "github": {

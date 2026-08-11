@@ -2,28 +2,42 @@
 const axios = require('axios');
 const { BaseSource } = require('./base.cjs');
 
-const VALID_PIPELINE_TAGS = [
-  'text-generation', 'text-to-image', 'text-to-video', 'image-text-to-text',
-  'text-to-speech', 'automatic-speech-recognition', 'text-to-audio',
-  'image-segmentation', 'object-detection'
-];
+const EXCLUDE_TAGS = ['tabular-classification', 'tabular-regression', 'token-classification', 'fill-mask'];
 
 class HuggingFaceSource extends BaseSource {
   constructor(config) { super('huggingface', config); }
 
   async fetchLatest() {
     const limit = this.config.limitPerRun || 50;
-    const minLikes = this.config.minLikes || 5;
+    const minLikes = this.config.minLikes || 3;
 
-    const [newRes, spaceRes] = await Promise.all([
-      axios.get('https://huggingface.co/api/models?sort=createdAt&direction=-1&limit=' + limit, { timeout: 20000 }),
-      axios.get('https://huggingface.co/api/spaces?sort=createdAt&direction=-1&limit=' + limit, { timeout: 20000 })
+    const [trendRes, newRes, spaceRes] = await Promise.all([
+      // Trending last 7 days — high quality signal
+      axios.get('https://huggingface.co/api/models?sort=likes&direction=-1&limit=' + limit + '&full=false', { timeout: 20000 }),
+      // Freshest models with any downloads (>0 means someone used it)
+      axios.get('https://huggingface.co/api/models?sort=createdAt&direction=-1&limit=' + limit + '&full=false', { timeout: 20000 }),
+      axios.get('https://huggingface.co/api/spaces?sort=likes&direction=-1&limit=' + limit, { timeout: 20000 })
     ]);
 
-    const models = (newRes.data || []).filter(m =>
-      (m.likes >= minLikes || m.downloads >= 100) &&
-      VALID_PIPELINE_TAGS.includes(m.pipeline_tag)
+    // Trending: require at least some likes
+    const trending = (trendRes.data || []).filter(m =>
+      (m.likes || 0) >= minLikes &&
+      !EXCLUDE_TAGS.includes(m.pipeline_tag)
     );
+
+    // New: require at least some downloads to filter pure noise
+    const newest = (newRes.data || []).filter(m =>
+      (m.downloads || 0) >= 10 &&
+      !EXCLUDE_TAGS.includes(m.pipeline_tag)
+    );
+
+    // Merge, dedup by modelId
+    const seen = new Set();
+    const models = [];
+    for (const m of [...trending, ...newest]) {
+      const key = m.modelId || m.id;
+      if (!seen.has(key)) { seen.add(key); models.push(m); }
+    }
 
     const spaces = (spaceRes.data || []).filter(s =>
       (s.likes || 0) >= minLikes
