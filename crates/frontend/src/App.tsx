@@ -47,6 +47,8 @@ export default function App() {
     const saved = localStorage.getItem('nn_news');
     return saved ? JSON.parse(saved) : INITIAL_NEWS;
   });
+
+  // Vault / Collections state
   const [vault, setVault] = useState<VaultPurchase[]>(() => {
     const saved = localStorage.getItem('nn_vault');
     return saved ? JSON.parse(saved) : [];
@@ -66,7 +68,10 @@ export default function App() {
 
   const handleAddAsset = (a: MarketplaceAsset) => setAssets(p => [a, ...p]);
   const handleAddPost  = (p: CommunityPost)    => setPosts(prev => [p, ...prev]);
-  const handleAddVault = (v: VaultPurchase)    => setVault(p => [v, ...p]);
+  
+  // Collections handlers
+  const handleAddVault    = (v: VaultPurchase) => setVault(p => [v, ...p.filter(item => item.id !== v.id)]);
+  const handleRemoveVault = (id: string)        => setVault(p => p.filter(item => item.id !== id));
 
   const handleUpvotePost = (id: string) =>
     setPosts(prev => prev.map(p => p.id === id
@@ -164,7 +169,14 @@ export default function App() {
         onClose={() => setSelectedAssetForBuy(null)}
         onCompletePurchase={handleAddVault}
       />
-      {isVaultOpen     && <VaultModal     purchases={vault} onClose={() => setIsVaultOpen(false)} />}
+      {isVaultOpen && (
+        <VaultModal
+          purchases={vault}
+          onClose={() => setIsVaultOpen(false)}
+          onRemovePurchase={handleRemoveVault}
+          onAddPurchase={handleAddVault}
+        />
+      )}
       {isListAssetOpen && <ListAssetModal onClose={() => setIsListAssetOpen(false)} onAddAsset={handleAddAsset} />}
       {isNewPostOpen   && <NewPostModal   onClose={() => setIsNewPostOpen(false)}   onAddPost={handleAddPost} />}
       <NewsArticleModal
