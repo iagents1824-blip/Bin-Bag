@@ -34,6 +34,13 @@ export const MobileSearchOverlay: React.FC<MobileSearchOverlayProps> = ({ isOpen
       ).slice(0, 20)
     : [];
 
+  const grouped = filtered.reduce((acc, tool) => {
+    const type = tool.item_type || 'tool';
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(tool);
+    return acc;
+  }, {} as Record<string, typeof ALL_TOOLS>);
+
   return (
     <div className="fixed inset-0 z-[100] bg-white flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
       {/* Search Header */}
@@ -49,7 +56,7 @@ export const MobileSearchOverlay: React.FC<MobileSearchOverlayProps> = ({ isOpen
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search AI tools, models, creators..."
+            placeholder="Search AI ecosystem..."
             value={query}
             onChange={e => setQuery(e.target.value)}
             className="w-full bg-gray-100 border-none text-gray-900 text-sm rounded-full pl-9 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-500"
@@ -80,7 +87,7 @@ export const MobileSearchOverlay: React.FC<MobileSearchOverlayProps> = ({ isOpen
                 <h4 className="font-bold text-indigo-900 text-sm">Pro Tip</h4>
               </div>
               <p className="text-xs text-indigo-700/80 leading-relaxed">
-                Search by category like "video gen", company name like "OpenAI", or use specific keywords to find the exact model weights.
+                Search across the entire ecosystem: models, papers, datasets, jobs, and events.
               </p>
             </div>
           </div>
@@ -97,16 +104,25 @@ export const MobileSearchOverlay: React.FC<MobileSearchOverlayProps> = ({ isOpen
                 <p className="text-gray-500 text-sm">No results found for "{query}"</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {filtered.map(tool => (
-                  <ListingCard
-                    key={tool.id}
-                    tool={tool}
-                    onClick={() => {
-                      onToolClick?.(tool.id);
-                      onClose();
-                    }}
-                  />
+              <div className="flex flex-col gap-6">
+                {Object.entries(grouped).map(([type, tools]) => (
+                  <div key={type}>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-1">
+                      {type === 'tool' ? 'AI Tools & Models' : type + 's'}
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {tools.map(tool => (
+                        <ListingCard
+                          key={tool.id}
+                          tool={tool}
+                          onClick={() => {
+                            onToolClick?.(tool.id);
+                            onClose();
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             )}

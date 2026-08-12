@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, Users, Bell, CheckCircle, ExternalLink, ShieldAlert, ChevronDown } from 'lucide-react';
+import { Star, Users, Bell, CheckCircle, ExternalLink, ShieldAlert, ChevronDown, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { AICompany, formatFollowers, ALL_TOOLS } from '../../data/mockAIData';
 import { ListingCard } from '../cards/ListingCard';
 
@@ -26,6 +26,17 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
   const companyTools = ALL_TOOLS.filter(t => t.company === company.name);
   const visibleTools = companyTools.slice(0, displayLimit);
 
+  const primaryTool = company.tools[0] || companyTools[0];
+  const isDiscontinued = primaryTool?.status === 'discontinued';
+  const isBrokenLink = primaryTool?.status === 'broken_link';
+  
+  let verifiedText = '';
+  if (primaryTool?.last_verified_at) {
+    const days = Math.floor((Date.now() - new Date(primaryTool.last_verified_at).getTime()) / (1000 * 60 * 60 * 24));
+    verifiedText = `Verified ${days === 0 ? 'today' : days + 'd ago'}`;
+  }
+
+
   return (
     <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 mb-6 relative">
       {/* Banner */}
@@ -40,9 +51,14 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
         <div className="hidden md:flex absolute top-4 right-4 items-center gap-2">
           <button
             onClick={handleVisitOfficialSite}
-            className="bg-[#0A0A0A] hover:bg-black text-white px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 transition-all shadow-md"
+            disabled={isDiscontinued || isBrokenLink}
+            className={`px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 transition-all shadow-md ${
+              isDiscontinued || isBrokenLink 
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                : 'bg-[#0A0A0A] hover:bg-black text-white'
+            }`}
           >
-            <span>Visit Official Site</span>
+            <span>{isDiscontinued || isBrokenLink ? 'Site Unavailable' : 'Visit Official Site'}</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
 
@@ -91,11 +107,23 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
 
         <div className="flex-1 min-w-0 pt-1 md:pt-2">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h2 className="font-black text-[#0A0A0A] text-xl md:text-2xl leading-tight">{company.name}</h2>
+            <h2 className="font-black text-[#0A0A0A] text-xl md:text-2xl leading-tight">
+              {company.name}
+            </h2>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white"
               style={{ backgroundColor: company.categoryColor }}>
               {company.categoryBadge}
             </span>
+            {isDiscontinued && (
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700 flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3" /> Discontinued
+              </span>
+            )}
+            {verifiedText && !isDiscontinued && (
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3" /> {verifiedText}
+              </span>
+            )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 mt-1 leading-relaxed line-clamp-2">{company.description}</p>
           <div className="flex items-center gap-3 md:gap-4 mt-3 flex-wrap">
@@ -132,15 +160,16 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
         </div>
 
         {/* Desktop Outbound Link shortcut */}
-        <a
-          href={`/go/${company.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:flex shrink-0 items-center gap-1 text-xs font-bold text-[#4F46E5] hover:underline ml-4"
+        <button
+          onClick={handleVisitOfficialSite}
+          disabled={isDiscontinued || isBrokenLink}
+          className={`hidden md:flex shrink-0 items-center gap-1 text-xs font-bold ml-4 ${
+            isDiscontinued || isBrokenLink ? 'text-gray-400 cursor-not-allowed' : 'text-[#4F46E5] hover:underline'
+          }`}
         >
           <span>{company.name} Official Portal</span>
           <ExternalLink className="w-3 h-3" />
-        </a>
+        </button>
       </div>
 
       {/* Tool grid / tab content */}
@@ -183,9 +212,14 @@ export const ToolProfileHero: React.FC<ToolProfileHeroProps> = ({ company, onToo
       <div className="md:hidden fixed bottom-16 left-0 right-0 p-4 bg-gradient-to-t from-[#F0EFE9] via-[#F0EFE9]/90 to-transparent z-40 pointer-events-none">
         <button
           onClick={handleVisitOfficialSite}
-          className="w-full bg-[#0A0A0A] text-white py-3.5 rounded-2xl text-[13px] font-black tracking-wide flex items-center justify-center gap-2 shadow-xl pointer-events-auto active:scale-[0.98] transition-transform"
+          disabled={isDiscontinued || isBrokenLink}
+          className={`w-full py-3.5 rounded-2xl text-[13px] font-black tracking-wide flex items-center justify-center gap-2 shadow-xl pointer-events-auto transition-transform ${
+            isDiscontinued || isBrokenLink 
+              ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+              : 'bg-[#0A0A0A] text-white active:scale-[0.98]'
+          }`}
         >
-          <span>Visit Official Site</span>
+          <span>{isDiscontinued || isBrokenLink ? 'Site Unavailable' : 'Visit Official Site'}</span>
           <ExternalLink className="w-4 h-4" />
         </button>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TrendingUp, Zap, Crown, ChevronDown, ArrowLeft, Building2 } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import { AI_COMPANIES, ALL_TOOLS, CATEGORIES, AICompany, AITool } from '../../data/mockAIData';
 import { ToolProfileHero } from './ToolProfileHero';
 import { ListingCard } from '../cards/ListingCard';
@@ -13,6 +14,8 @@ interface ExploreViewProps {
 }
 
 export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolClick, onAddToCollection }) => {
+  const { type } = useParams<{ type: string }>();
+
   const [featuredCompany, setFeaturedCompany] = useState<AICompany>(AI_COMPANIES[0]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
@@ -23,7 +26,10 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
     const q = searchQuery.toLowerCase();
     const matchQ = !q || t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.company.toLowerCase().includes(q);
     const matchCat = activeCategory === 'all' || t.category.toLowerCase().includes(activeCategory);
-    return matchQ && matchCat;
+    const matchType = !type || t.item_type === type;
+    // Default to tools if no type is set, or if type is 'tools' but item_type is undefined
+    const isToolView = !type && (!t.item_type || t.item_type === 'tool');
+    return matchQ && matchCat && (matchType || isToolView);
   });
 
   const visibleTools = filtered.slice(0, displayLimit);
@@ -105,12 +111,12 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
       </div>
 
       {/* Featured company hero */}
-      {activeCategory === 'all' && !searchQuery && (
+      {activeCategory === 'all' && !searchQuery && !type && (
         <ToolProfileHero company={featuredCompany} onToolClick={onToolClick} />
       )}
 
       {/* Explore categories row */}
-      {activeCategory === 'all' && !searchQuery && (
+      {activeCategory === 'all' && !searchQuery && !type && (
         <CategoryExploreRow
           title="Explore AI Companies"
           companies={AI_COMPANIES.slice(0, 6)}
@@ -123,7 +129,7 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
       )}
 
       {/* Trending / new tools banner */}
-      {activeCategory === 'all' && !searchQuery && (
+      {activeCategory === 'all' && !searchQuery && !type && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="md:col-span-2 bg-gradient-to-br from-[#0A0A0A] to-gray-800 rounded-3xl p-6 flex items-center justify-between">
             <div>
@@ -159,11 +165,11 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-indigo-500" />
-            <h2 className="font-bold text-[#0A0A0A] text-lg">
-              {activeCategory === 'all' ? 'All AI Tools & Models' : CATEGORIES.find(c => c.id === activeCategory)?.label}
+            <h2 className="font-bold text-[#0A0A0A] text-lg capitalize">
+              {type ? `${type} Ecosystem` : (activeCategory === 'all' ? 'All AI Tools & Models' : CATEGORIES.find(c => c.id === activeCategory)?.label)}
             </h2>
             <span className="text-sm text-gray-500 font-semibold bg-gray-100 border border-gray-200 px-2.5 py-0.5 rounded-full">
-              {filtered.length} tools indexed
+              {filtered.length} {type ? 'items' : 'tools'} indexed
             </span>
           </div>
         </div>

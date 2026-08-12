@@ -13,6 +13,12 @@ export interface AITool {
   isNew?: boolean;
   isFeatured?: boolean;
   url?: string;
+  status?: string;
+  last_verified_at?: string;
+  item_type?: string;
+  authors?: string;
+  location?: string;
+  event_date?: string;
 }
 
 export interface AICompany {

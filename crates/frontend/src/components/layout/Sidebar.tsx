@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Home, Compass, Bookmark, Users, Brain, Newspaper, GitBranch, Settings, Package } from 'lucide-react';
+import { Home, Compass, Bookmark, Users, Brain, Newspaper, GitBranch, Settings, Package, BookOpen, Briefcase, Database, Calendar, Headphones, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/',           label: 'Home',       icon: Home },
@@ -9,10 +9,21 @@ const NAV_ITEMS = [
   { to: '/news',       label: 'News',       icon: Newspaper },
   { to: '/community',  label: 'Community',  icon: Users },
   { to: '/models',     label: 'Models',     icon: Brain },
-  { to: '/workflows',  label: 'Workflows',  icon: GitBranch },
+];
+
+const ECOSYSTEM_ITEMS = [
+  { to: '/ecosystem/research',   label: 'Research',    icon: BookOpen },
+  { to: '/ecosystem/learning',   label: 'Learning',    icon: GraduationCap },
+  { to: '/ecosystem/jobs',       label: 'Jobs',        icon: Briefcase },
+  { to: '/ecosystem/datasets',   label: 'Datasets',    icon: Database },
+  { to: '/workflows',            label: 'Open Source', icon: GitBranch },
+  { to: '/ecosystem/events',     label: 'Events',      icon: Calendar },
+  { to: '/ecosystem/podcasts',   label: 'Podcasts',    icon: Headphones },
 ];
 
 export const Sidebar: React.FC<{ onOpenVault?: () => void; vaultCount?: number }> = ({ onOpenVault, vaultCount }) => {
+  const [ecosystemOpen, setEcosystemOpen] = useState(true);
+
   return (
     <>
       {/* Desktop sidebar */}
@@ -45,6 +56,37 @@ export const Sidebar: React.FC<{ onOpenVault?: () => void; vaultCount?: number }
               {({ isActive }) => (
                 <>
                   <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                  <span>{label}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
+          
+          <div className="pt-4 pb-1">
+            <button 
+              onClick={() => setEcosystemOpen(!ecosystemOpen)}
+              className="flex items-center justify-between w-full px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider hover:text-gray-700 transition-colors"
+            >
+              <span>Ecosystem</span>
+              {ecosystemOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+          </div>
+          
+          {ecosystemOpen && ECOSYSTEM_ITEMS.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-indigo-50 text-indigo-700'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`} />
                   <span>{label}</span>
                 </>
               )}
@@ -89,7 +131,7 @@ export const Sidebar: React.FC<{ onOpenVault?: () => void; vaultCount?: number }
         </div>
       </aside>
 
-      {/* Mobile bottom nav */}
+      {/* Mobile bottom nav - Keep 5 items */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom,16px)] pt-2 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
         {NAV_ITEMS.slice(0, 5).map(({ to, label, icon: Icon }) => (
           <NavLink

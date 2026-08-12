@@ -90,6 +90,7 @@ function mergeWithRaw(raw, classified) {
     long_description:  classified.long_description  || '',
     category:          classified.category          || 'other',
     subcategory:       classified.subcategory        || null,
+    item_type:         classified.item_type          || 'tool',
     website_url:       classified.website_url        || raw.website_url || '',
     logo_url:          classified.logo_url           || raw.logo_url    || null,
     pricing_model:     classified.pricing_model      || raw.pricing     || null,

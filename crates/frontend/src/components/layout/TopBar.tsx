@@ -9,11 +9,11 @@ interface TopBarProps {
   onOpenMobileSearch?: () => void;
 }
 
-const CATEGORIES = ['All Categories', 'Chatbot', 'Audio', 'Video', 'Image', 'Code', 'Agent', 'API', 'Search', 'Writing'];
+const CATEGORIES = ['All Ecosystem', 'Tool & Models', 'Research Papers', 'Learning & Courses', 'Jobs', 'Datasets', 'Events', 'Podcasts'];
 const SORT_OPTIONS = ['Newest', 'Most Popular', 'Trending', 'Top Rated', 'Free Only'];
 
 export const TopBar: React.FC<TopBarProps> = ({ searchQuery, setSearchQuery, onToggleListAsset, onOpenMobileSearch }) => {
-  const [category, setCategory] = useState('All Categories');
+  const [category, setCategory] = useState('All Ecosystem');
   const [sort, setSort] = useState('Most Popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 

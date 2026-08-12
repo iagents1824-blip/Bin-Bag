@@ -1,6 +1,6 @@
 {
   "taxonomy": {
-    "categories": ["chatbot", "audio", "video", "image", "document", "code", "writing", "agent", "api", "browser-extension", "other"],
+    "categories": ["chatbot", "audio", "video", "image", "document", "code", "writing", "agent", "api", "browser-extension", "research", "learning", "job", "community", "dataset", "framework", "event", "podcast", "other"],
     "subcategories": {
       "chatbot":    ["general-purpose", "customer-support", "roleplay", "productivity"],
       "audio":      ["text-to-speech", "speech-to-text", "music-generation", "voice-cloning"],
@@ -12,7 +12,15 @@
       "agent":      ["autonomous-agent", "multi-agent", "workflow-automation"],
       "api":        ["llm-api", "embedding-api", "moderation-api"],
       "browser-extension": ["productivity", "summarization", "writing-assistant"],
-      "other":      ["research", "analytics", "data-extraction"]
+      "research":   ["papers", "models"],
+      "learning":   ["courses", "tutorials"],
+      "job":        ["engineering", "research", "product"],
+      "community":  ["discord", "reddit", "forum"],
+      "dataset":    ["text", "vision", "audio"],
+      "framework":  ["training", "inference", "agent"],
+      "event":      ["conference", "hackathon", "meetup"],
+      "podcast":    ["news", "interviews"],
+      "other":      ["analytics", "data-extraction"]
     }
   },
   "scoring": {

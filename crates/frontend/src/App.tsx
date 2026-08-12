@@ -131,6 +131,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
               <Route path="/explore" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
+              <Route path="/ecosystem/:type" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
 
               <Route path="/marketplace" element={
                 <MarketplaceView
