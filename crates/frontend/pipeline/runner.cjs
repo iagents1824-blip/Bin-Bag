@@ -11,10 +11,13 @@ const sourcesConfig = JSON.parse(
 );
 
 // â”€â”€ Sources â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const { HuggingFaceSource } = require('./ingest/huggingface.cjs');
-const { ProductHuntSource } = require('./ingest/producthunt.cjs');
-const { RssLabsSource }     = require('./ingest/rss-labs.cjs');
-const { GitHubSource }      = require('./ingest/github.cjs');
+const { HuggingFaceSource }        = require('./ingest/huggingface.cjs');
+const { ProductHuntSource }        = require('./ingest/producthunt.cjs');
+const { RssLabsSource }            = require('./ingest/rss-labs.cjs');
+const { GitHubSource }             = require('./ingest/github.cjs');
+const { ArxivSource }              = require('./ingest/arxiv.cjs');
+const { HuggingFacePapersSource }  = require('./ingest/hf-papers.cjs');
+const { HuggingFaceDatasetsSource }= require('./ingest/hf-datasets.cjs');
 
 // â”€â”€ Pipeline stages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const { classifyBatch }   = require('./classify/classify.cjs');
@@ -53,6 +56,15 @@ async function runPipeline() {
   }
   if (sourcesConfig.producthunt && sourcesConfig.producthunt.enabled) {
     sources.push(new ProductHuntSource(sourcesConfig.producthunt));
+  }
+  if (sourcesConfig.arxiv && sourcesConfig.arxiv.enabled) {
+    sources.push(new ArxivSource(sourcesConfig.arxiv));
+  }
+  if (sourcesConfig['hf-papers'] && sourcesConfig['hf-papers'].enabled) {
+    sources.push(new HuggingFacePapersSource(sourcesConfig['hf-papers']));
+  }
+  if (sourcesConfig['hf-datasets'] && sourcesConfig['hf-datasets'].enabled) {
+    sources.push(new HuggingFaceDatasetsSource(sourcesConfig['hf-datasets']));
   }
 
   const ingestResults = await Promise.allSettled(

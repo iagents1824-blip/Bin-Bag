@@ -24,5 +24,21 @@
     "enabled": true,
     "topics": ["ai-agent", "llm", "text-to-image", "voice-ai", "ai-tool"],
     "minStars": 50
+  },
+  "arxiv": {
+    "enabled": true,
+    "limitPerRun": 30,
+    "note": "Fetches cs.AI, cs.CL, cs.LG RSS feeds — item_type: research"
+  },
+  "hf-papers": {
+    "enabled": true,
+    "limitPerRun": 20,
+    "note": "Fetches HuggingFace Daily Papers — item_type: research"
+  },
+  "hf-datasets": {
+    "enabled": true,
+    "limitPerRun": 30,
+    "minLikes": 5,
+    "note": "Fetches HuggingFace Datasets — item_type: dataset"
   }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, Bookmark, BookmarkCheck, Star, Check, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Plus, Bookmark, BookmarkCheck, Star, Check, AlertTriangle, ShieldCheck, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { AITool } from '../../data/mockAIData';
 
 interface ListingCardProps {
@@ -12,6 +13,10 @@ interface ListingCardProps {
 export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave, saved }) => {
   const [imgError, setImgError] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const slug = tool.slug || tool.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const detailPath = `/tool/${slug}`;
 
   const handleSaveClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -83,10 +88,14 @@ export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave,
   };
 
   return (
-    <div
-      className={`bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 transition-all cursor-pointer group ${isDiscontinued ? 'opacity-60 grayscale-[50%]' : 'hover:shadow-md hover:-translate-y-0.5'}`}
-      onClick={onClick}
-    >
+    <div className="relative group">
+      <Link
+        to={detailPath}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={`block bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 transition-all cursor-pointer ${isDiscontinued ? 'opacity-60 grayscale-[50%]' : 'hover:shadow-md hover:-translate-y-0.5'}`}
+        onClick={onClick}
+      >
       {/* Image */}
       <div className="relative h-36 md:h-44 overflow-hidden bg-gray-100">
         {!imgError ? (
@@ -167,6 +176,21 @@ export const ListingCard: React.FC<ListingCardProps> = ({ tool, onClick, onSave,
 
         {renderCardBody()}
       </div>
+      </Link>
+      
+      {/* External Link hover overlay */}
+      {hovered && !isDiscontinued && !isBrokenLink && (
+        <a 
+          href={detailPath} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center hover:bg-black hover:scale-110"
+          onClick={(e) => e.stopPropagation()}
+          title="Open detail page in new tab"
+        >
+          <ExternalLink className="w-5 h-5" />
+        </a>
+      )}
     </div>
   );
 };

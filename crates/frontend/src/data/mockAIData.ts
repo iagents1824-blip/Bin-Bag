@@ -19,6 +19,15 @@ export interface AITool {
   authors?: string;
   location?: string;
   event_date?: string;
+  slug?: string;
+  full_description?: string;
+  short_description?: string;
+  screenshot_url?: string;
+  launch_date?: string;
+  official_pricing_url?: string;
+  subcategory?: string;
+  ai_generated_description?: boolean;
+  tags?: string[];
 }
 
 export interface AICompany {

@@ -88,20 +88,29 @@ function mergeWithRaw(raw, classified) {
     slug:              slugify(classified.name     || raw.name),
     short_description: classified.short_description || '',
     long_description:  classified.long_description  || '',
+    full_description:  classified.full_description  || classified.long_description || '',
+    ai_generated_description: classified.ai_generated_description ?? true,
     category:          classified.category          || 'other',
     subcategory:       classified.subcategory        || null,
     item_type:         classified.item_type          || 'tool',
     website_url:       classified.website_url        || raw.website_url || '',
+    official_pricing_url: classified.official_pricing_url || null,
     logo_url:          classified.logo_url           || raw.logo_url    || null,
+    screenshot_url:    classified.screenshot_url     || null,
     pricing_model:     classified.pricing_model      || raw.pricing     || null,
     tags:              classified.tags               || raw.tags        || [],
+    authors:           classified.authors            || raw.authors     || null,
+    location:          classified.location           || null,
+    event_date:        classified.event_date         || null,
     source:            raw.source,
     source_url:        raw.source_url  || null,
-    launch_date:       raw.launch_date || null,
-    status:            'pending_review', // will be updated by score step
+    launch_date:       classified.launch_date || raw.launch_date || null,
+    status:            'pending_review',
     score:             0,
     discovered_at:     now,
-    last_updated_at:   now
+    last_updated_at:   now,
+    last_verified_at:  null,
+    broken_link_count: 0,
   };
 }
 

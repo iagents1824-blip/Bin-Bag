@@ -20,6 +20,7 @@ import { ListAssetModal } from './components/ListAssetModal';
 import { NewPostModal } from './components/NewPostModal';
 import { NewsArticleModal } from './components/NewsArticleModal';
 import { MobileSearchOverlay } from './components/MobileSearchOverlay';
+import { ToolDetailPage } from './pages/ToolDetailPage';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -132,6 +133,8 @@ export default function App() {
               <Route path="/" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
               <Route path="/explore" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
               <Route path="/ecosystem/:type" element={<ExploreView searchQuery={searchQuery} onAddToCollection={handleAddToCollection} />} />
+              <Route path="/tool/:slug" element={<ToolDetailPage />} />
+              <Route path="/item/:type/:slug" element={<ToolDetailPage />} />
 
               <Route path="/marketplace" element={
                 <MarketplaceView

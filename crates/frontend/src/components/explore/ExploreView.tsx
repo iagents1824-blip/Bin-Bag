@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { TrendingUp, Zap, Crown, ChevronDown, ArrowLeft, Building2 } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AI_COMPANIES, ALL_TOOLS, CATEGORIES, AICompany, AITool } from '../../data/mockAIData';
 import { ToolProfileHero } from './ToolProfileHero';
 import { ListingCard } from '../cards/ListingCard';
+import { EcosystemCard } from '../cards/EcosystemCard';
 import { CategoryExploreRow } from './CategoryExploreRow';
 import { CompanyCard } from '../cards/CompanyCard';
 
@@ -180,17 +181,26 @@ export const ExploreView: React.FC<ExploreViewProps> = ({ searchQuery, onToolCli
           </div>
         ) : (
           <>
-            {/* Dense 6-8 Column Desktop Grid */}
+            {/* Dense grid — use EcosystemCard for non-tool items */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 sm:gap-4">
-              {visibleTools.map(tool => (
-                <ListingCard
-                  key={tool.id}
-                  tool={tool}
-                  onClick={() => onToolClick?.(tool.id)}
-                  onSave={() => handleSaveTool(tool)}
-                  saved={savedTools.has(tool.id)}
-                />
-              ))}
+              {visibleTools.map(tool =>
+                (!tool.item_type || tool.item_type === 'tool') ? (
+                  <ListingCard
+                    key={tool.id}
+                    tool={tool}
+                    onClick={() => onToolClick?.(tool.id)}
+                    onSave={() => handleSaveTool(tool)}
+                    saved={savedTools.has(tool.id)}
+                  />
+                ) : (
+                  <EcosystemCard
+                    key={tool.id}
+                    tool={tool}
+                    onSave={() => handleSaveTool(tool)}
+                    saved={savedTools.has(tool.id)}
+                  />
+                )
+              )}
             </div>
 
             {/* Load More Button */}
