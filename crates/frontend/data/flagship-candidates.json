@@ -1,5 +1,21 @@
 [
   {
+    "headline": "Google AI Just Released Gemini 3.7 Flash: A Coding and Agent Model at $0.75/1M Input Tokens",
+    "link": "https://www.marktechpost.com/2026/08/13/google-ai-just-released-gemini-3-7-flash/",
+    "matchedFamily": "GPT",
+    "dateFound": "2026-08-13T21:40:58.364Z",
+    "publishedDate": "Thu, 13 Aug 2026 17:47:41 +0000",
+    "status": "pending_review"
+  },
+  {
+    "headline": "SpaceXAI Releases Grok 4.6: A 500K-Context Frontier Model Tuned for Long-Running Agents, Coding, and Knowledge Work",
+    "link": "https://www.marktechpost.com/2026/08/12/spacexai-releases-grok-4-6/",
+    "matchedFamily": "GPT",
+    "dateFound": "2026-08-13T21:40:58.364Z",
+    "publishedDate": "Thu, 13 Aug 2026 06:18:14 +0000",
+    "status": "pending_review"
+  },
+  {
     "headline": "Launching Health in ChatGPT ",
     "link": "https://openai.com/index/health-in-chatgpt",
     "matchedFamily": "GPT",

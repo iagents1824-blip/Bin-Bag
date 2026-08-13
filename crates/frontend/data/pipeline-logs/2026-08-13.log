@@ -1,0 +1,8 @@
+[2026-08-13T21:40:54.256Z] === BinBag Auto-Listing Pipeline START ===
+[2026-08-13T21:40:58.369Z] Ingested 171 raw items from 6 sources.
+[2026-08-13T21:40:58.370Z] Classifying 171 items...
+[2026-08-13T21:40:58.373Z] Classification complete: 171 items.
+[2026-08-13T21:40:58.385Z] Deduplication: 8 unique, 163 duplicates removed.
+[2026-08-13T21:40:58.386Z] Scored: 8 auto-publish, 0 pending-review.
+[2026-08-13T21:40:58.389Z] Persisted 8 new listings.
+[2026-08-13T21:40:58.390Z] === BinBag Auto-Listing Pipeline DONE ===

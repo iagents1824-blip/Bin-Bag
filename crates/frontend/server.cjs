@@ -111,6 +111,15 @@ try {
   console.warn('Admin pipeline routes not available:', err.message);
 }
 
+// ── Ingest API (n8n automation) ──────────────────────────────
+try {
+  const ingestRouter = require('./pipeline/admin/ingest-api.cjs');
+  app.use('/api/admin', ingestRouter);
+  console.log('Ingest API routes mounted at /api/admin');
+} catch (err) {
+  console.warn('Ingest API routes not available:', err.message);
+}
+
 // ── Static + SPA catch-all ─────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'dist')));
 app.get('*path', (req, res) => {

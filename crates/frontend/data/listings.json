@@ -13,9 +13,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 242663181,
+      "downloads": 249737528,
       "rating": 4.8,
-      "reviewCount": 59,
+      "reviewCount": 4,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -29,7 +29,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -46,9 +46,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 117812614,
+      "downloads": 114781475,
       "rating": 4.8,
-      "reviewCount": 12,
+      "reviewCount": 36,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -62,7 +62,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google-bert/bert-base-uncased",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -79,9 +79,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 83207296,
+      "downloads": 86255149,
       "rating": 4.8,
-      "reviewCount": 10,
+      "reviewCount": 91,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -95,7 +95,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -112,9 +112,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 68020392,
+      "downloads": 70982803,
       "rating": 4.8,
-      "reviewCount": 25,
+      "reviewCount": 5,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -128,7 +128,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/BAAI/bge-small-en-v1.5",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -145,9 +145,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 55750925,
+      "downloads": 56326151,
       "rating": 4.8,
-      "reviewCount": 23,
+      "reviewCount": 20,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -161,7 +161,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -178,9 +178,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 53993918,
+      "downloads": 53999414,
       "rating": 4.8,
-      "reviewCount": 36,
+      "reviewCount": 87,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -194,7 +194,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google/electra-base-discriminator",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -211,9 +211,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 38652401,
+      "downloads": 36682039,
       "rating": 4.8,
-      "reviewCount": 57,
+      "reviewCount": 24,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -227,40 +227,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/lpiccinelli/unidepth-v2-vitl14",
-    "createdAt": "2026-08-09T18:37:26.609Z",
-    "featured": false
-  },
-  {
-    "id": "65b53851e602b6c2c96e78da",
-    "title": "BAAI/bge-m3",
-    "tagline": "Pipeline: sentence-similarity",
-    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
-    "category": "Full Model Weights",
-    "price": 0,
-    "creator": {
-      "name": "Community",
-      "handle": "@hf_community",
-      "verified": true,
-      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
-    },
-    "stats": {
-      "downloads": 32716904,
-      "rating": 4.8,
-      "reviewCount": 70,
-      "efficiencyScore": "A"
-    },
-    "tags": [
-      "sentence-transformers",
-      "pytorch",
-      "onnx",
-      "xlm-roberta"
-    ],
-    "specs": {
-      "framework": "PyTorch",
-      "format": "Safetensors"
-    },
-    "downloadUrl": "https://huggingface.co/BAAI/bge-m3",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -277,9 +244,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 31469807,
+      "downloads": 35520039,
       "rating": 4.8,
-      "reviewCount": 81,
+      "reviewCount": 17,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -293,7 +260,40 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/amazon/chronos-2",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
+    "featured": false
+  },
+  {
+    "id": "65b53851e602b6c2c96e78da",
+    "title": "BAAI/bge-m3",
+    "tagline": "Pipeline: sentence-similarity",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 34114402,
+      "rating": 4.8,
+      "reviewCount": 91,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "sentence-transformers",
+      "pytorch",
+      "onnx",
+      "xlm-roberta"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/BAAI/bge-m3",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -310,9 +310,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 27776325,
+      "downloads": 28918182,
       "rating": 4.8,
-      "reviewCount": 58,
+      "reviewCount": 54,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -326,7 +326,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/Qwen/Qwen3-0.6B",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -343,9 +343,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 23247244,
+      "downloads": 24124884,
       "rating": 4.8,
-      "reviewCount": 30,
+      "reviewCount": 98,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -359,7 +359,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -376,9 +376,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 22512802,
+      "downloads": 22559278,
       "rating": 4.8,
-      "reviewCount": 27,
+      "reviewCount": 12,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -392,7 +392,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/google-t5/t5-small",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -409,9 +409,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 20333653,
+      "downloads": 20527197,
       "rating": 4.8,
-      "reviewCount": 74,
+      "reviewCount": 23,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -425,40 +425,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/openai/clip-vit-base-patch32",
-    "createdAt": "2026-08-09T18:37:26.609Z",
-    "featured": false
-  },
-  {
-    "id": "621ffdc036468d709f174364",
-    "title": "FacebookAI/xlm-roberta-base",
-    "tagline": "Pipeline: fill-mask",
-    "description": "A popular trending model fetched live from HuggingFace. Optimized for fill-mask.",
-    "category": "Full Model Weights",
-    "price": 0,
-    "creator": {
-      "name": "Community",
-      "handle": "@hf_community",
-      "verified": true,
-      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
-    },
-    "stats": {
-      "downloads": 17812976,
-      "rating": 4.8,
-      "reviewCount": 20,
-      "efficiencyScore": "A"
-    },
-    "tags": [
-      "transformers",
-      "pytorch",
-      "tf",
-      "jax"
-    ],
-    "specs": {
-      "framework": "PyTorch",
-      "format": "Safetensors"
-    },
-    "downloadUrl": "https://huggingface.co/FacebookAI/xlm-roberta-base",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -475,9 +442,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 17717421,
+      "downloads": 18171008,
       "rating": 4.8,
-      "reviewCount": 87,
+      "reviewCount": 2,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -491,40 +458,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/BAAI/bge-reranker-v2-m3",
-    "createdAt": "2026-08-09T18:37:26.609Z",
-    "featured": false
-  },
-  {
-    "id": "627b72ed67b1ac7afa4c42a7",
-    "title": "facebook/opt-125m",
-    "tagline": "Pipeline: text-generation",
-    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
-    "category": "Full Model Weights",
-    "price": 0,
-    "creator": {
-      "name": "Community",
-      "handle": "@hf_community",
-      "verified": true,
-      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
-    },
-    "stats": {
-      "downloads": 17128035,
-      "rating": 4.8,
-      "reviewCount": 70,
-      "efficiencyScore": "A"
-    },
-    "tags": [
-      "transformers",
-      "pytorch",
-      "tf",
-      "jax"
-    ],
-    "specs": {
-      "framework": "PyTorch",
-      "format": "Safetensors"
-    },
-    "downloadUrl": "https://huggingface.co/facebook/opt-125m",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -541,9 +475,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 17092682,
+      "downloads": 17837334,
       "rating": 4.8,
-      "reviewCount": 76,
+      "reviewCount": 21,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -557,7 +491,73 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
+    "featured": false
+  },
+  {
+    "id": "621ffdc036468d709f174364",
+    "title": "FacebookAI/xlm-roberta-base",
+    "tagline": "Pipeline: fill-mask",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for fill-mask.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17523850,
+      "rating": 4.8,
+      "reviewCount": 26,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/FacebookAI/xlm-roberta-base",
+    "createdAt": "2026-08-13T21:40:54.705Z",
+    "featured": false
+  },
+  {
+    "id": "627b72ed67b1ac7afa4c42a7",
+    "title": "facebook/opt-125m",
+    "tagline": "Pipeline: text-generation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
+    "category": "Full Model Weights",
+    "price": 0,
+    "creator": {
+      "name": "Community",
+      "handle": "@hf_community",
+      "verified": true,
+      "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
+    },
+    "stats": {
+      "downloads": 17477199,
+      "rating": 4.8,
+      "reviewCount": 89,
+      "efficiencyScore": "A"
+    },
+    "tags": [
+      "transformers",
+      "pytorch",
+      "tf",
+      "jax"
+    ],
+    "specs": {
+      "framework": "PyTorch",
+      "format": "Safetensors"
+    },
+    "downloadUrl": "https://huggingface.co/facebook/opt-125m",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -574,9 +574,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 15044963,
+      "downloads": 16086018,
       "rating": 4.8,
-      "reviewCount": 50,
+      "reviewCount": 89,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -590,7 +590,7 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/Qwen/Qwen3-8B",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
@@ -607,9 +607,9 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 14732761,
+      "downloads": 15362903,
       "rating": 4.8,
-      "reviewCount": 66,
+      "reviewCount": 8,
       "efficiencyScore": "A"
     },
     "tags": [
@@ -623,14 +623,14 @@
       "format": "Safetensors"
     },
     "downloadUrl": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   },
   {
-    "id": "649e84b72ccae3ea1f35fb8b",
-    "title": "intfloat/multilingual-e5-small",
-    "tagline": "Pipeline: sentence-similarity",
-    "description": "A popular trending model fetched live from HuggingFace. Optimized for sentence-similarity.",
+    "id": "67449267a8b7b9f766e74310",
+    "title": "trl-internal-testing/tiny-Qwen2ForCausalLM-2.5",
+    "tagline": "Pipeline: text-generation",
+    "description": "A popular trending model fetched live from HuggingFace. Optimized for text-generation.",
     "category": "Full Model Weights",
     "price": 0,
     "creator": {
@@ -640,23 +640,23 @@
       "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=hf"
     },
     "stats": {
-      "downloads": 14357655,
+      "downloads": 13810308,
       "rating": 4.8,
-      "reviewCount": 11,
+      "reviewCount": 57,
       "efficiencyScore": "A"
     },
     "tags": [
-      "sentence-transformers",
-      "pytorch",
-      "onnx",
-      "safetensors"
+      "transformers",
+      "safetensors",
+      "qwen2",
+      "text-generation"
     ],
     "specs": {
       "framework": "PyTorch",
       "format": "Safetensors"
     },
-    "downloadUrl": "https://huggingface.co/intfloat/multilingual-e5-small",
-    "createdAt": "2026-08-09T18:37:26.609Z",
+    "downloadUrl": "https://huggingface.co/trl-internal-testing/tiny-Qwen2ForCausalLM-2.5",
+    "createdAt": "2026-08-13T21:40:54.705Z",
     "featured": false
   }
 ]
